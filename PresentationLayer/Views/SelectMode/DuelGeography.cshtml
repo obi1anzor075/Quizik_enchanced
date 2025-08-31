@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Дуэль";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.18/signalr.min.js"></script>
+    <link href="~/css/duel-mode.css" rel="stylesheet" />
+    <link href="~/css/answer-effects.css" rel="stylesheet" />
+</head>
+<body data-gamemode="DuelGeography">
+    <header class="head__part">
+        <div class="back-button">
+            <a asp-controller="Home" asp-action="SelectMode" id="backButton" class="head__back">Назад</a>
+        </div>
+
+        <div id="question" class="question" style="display: none">
+            <div class="relative-container">
+                <img class="question-style" src="~/img/game/question-style.svg" alt="Alternate Text" />
+                <div class="question-wrapper" translate="no">
+                    <div id="questionId" style="display:none;" class="question-label">Вопрос @ViewBag.QuestionId</div><div id="questionText" class="question-text">@ViewBag.QuestionText</div>
+                </div>
+                <div id="timeBarContainer">
+                    <div id="timerBar"></div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <main class="main__part">
+        <div id="questionSection" style="display: none;flex-direction: column; align-items: center;">
+            <div class="question-img">
+                <img id="questionImage" src="" alt="Question Image" style="display: none;">
+            </div>
+            <div class="question-answer" translate="no">
+                <div class="wrapper" id="answersList"></div>
+            </div>
+        </div>
+        <div class="card-login-container">
+            <div class="card-login" id="card-login">
+                <div class="duel-log" id="duel-log">
+                    <h2 class="card-log-title">Подключение к комнате</h2>
+                    <p class="error" id="error" style="display: none">
+                        Комната заполнена
+                    </p>
+                    <div class="input__room_wrapper">
+                        <input id="input__room" placeholder="Название комнаты" type="text" class="input__room" />
+                    </div>
+                    <button id="joinDuelBtn" class="button join-duel-btn">Присоединиться</button>
+                </div>
+                <div class="waiting-card" id="waiting-card" style="display:none;">
+                    <div class="loader">
+                        <div class="circle-waiting-card" id="a"></div>
+                        <div class="circle-waiting-card" id="b"></div>
+                        <div class="circle-waiting-card" id="c"></div>
+                    </div>
+                    <div class="caption">Ожидание игрока...</div>
+                </div>
+            </div>
+        </div>
+        <div class="finish__level_card_wrapper" id="finish__level_card_wrapper" style="display: none">
+            <div class="finish__level_card">
+                <!-- Здесь будет вставлен результат игры -->
+            </div>
+        </div>
+
+        <div id="timer" style="display: none;">45</div> <!-- Таймер на 45 секунд -->
+    </main>
+    <footer class="footer__part"></footer>
+    
+    <!-- Подключение jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Подключение Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+    <script src="//bootstraptema.ru/snippets/effect/2018/confettikit/randomColor.js"></script>
+    <script src="//bootstraptema.ru/snippets/effect/2018/confettikit/confettikit.min.js"></script>
+    <script src="~/js/duel-handler.js"></script>
+</body>

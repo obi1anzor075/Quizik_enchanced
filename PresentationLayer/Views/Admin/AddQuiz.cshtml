@@ -1,0 +1,314 @@
+﻿@{
+    ViewData["Title"] = "Добавление викторины";
+}
+
+<head>
+    <link href="~/css/profile.css" rel="stylesheet" />
+    <link href="~/css/admin.css" rel="stylesheet" />
+    <!-- Подключаем Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <header>
+        <div class="head__mode_part" style="display: flex; justify-content: center; margin-block: 50px;">
+            <div class="head__mode_left">
+                <div class="back-button">
+                    <a asp-controller="Home" asp-action="SelectMode" id="backButton" class="head__back">Назад</a>
+                </div>
+            </div>
+            <div class="logo__img">
+                <img src="~/img/logo.svg" class="main__logo_landing" alt="Логотип Quizik" />
+            </div>
+            <div class="head__mode_right" style="display:none;">
+                div
+            </div>
+        </div>
+    </header>
+    <!-- Шапка (логотип, настройки и т.д.) -->
+    <div class="head__part">
+        <div></div>
+        <div></div>
+        <div class="settings">
+            <div class="language-selector">
+                @* Селектор языка закомментирован *@
+            </div>
+        </div>
+    </div>
+
+    <!-- Swiper c ДВУМЯ слайдами -->
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+
+            <!-- СЛАЙД 1: обычная форма для простых вопросов -->
+            <div class="swiper-slide">
+                <form asp-action="AddQuestion" method="post" id="addQuestionForm" class="question-form">
+                    <p style="font-size:32px; font-weight:800;">Добавить новый вопрос</p>
+
+                    <!-- Выпадающий список для выбора таблицы -->
+                    <select id="tableName" name="TableName" required>
+                        <option value="">Выберите таблицу</option>
+                        @foreach (var table in Model)
+                        {
+                            <option value="@table">@table</option>
+                        }
+                    </select>
+
+                    <input type="text" name="QuestionText" id="questionText" placeholder="Текст вопроса" required />
+                    <input type="text" name="CorrectAnswer" id="correctAnswer" placeholder="Правильный ответ" required />
+                    <input type="text" name="Answer1" id="answer1" placeholder="Вариант 1" required />
+                    <input type="text" name="Answer2" id="answer2" placeholder="Вариант 2" required />
+                    <input type="text" name="Answer3" id="answer3" placeholder="Вариант 3" required />
+                    <input type="text" name="Answer4" id="answer4" placeholder="Вариант 4" required />
+
+                    <textarea id="questionExplanation" name="QuestionExplanataion"
+                              placeholder="Объяснение вопроса (необязательно)"></textarea>
+
+                    <div class="setting image_picker">
+                        <div class="settings_wrap">
+                            <label class="drop_target">
+                                <div class="image_preview"></div>
+                                <img class="drop_target_img"
+                                     src="~/img/svg-icons/cloud-arrow-up-solid.svg"
+                                     alt="Выбрать из загрузок" />
+                                <input id="inputFile" name="ImageFile" type="file" required />
+                            </label>
+
+                            <div class="settings_actions vertical">
+                                <a data-action="choose_from_uploaded">
+                                    <img src="~/img/svg-icons/image-solid.svg"
+                                         alt="Выбрать из загрузок"
+                                         style="width:15px; height:15px;" />
+                                    Choose from Uploads
+                                </a>
+                                <a class="disabled" data-action="remove_current_image">
+                                    <img src="~/img/svg-icons/trash-solid.svg"
+                                         alt="Удалить текущую иконку"
+                                         style="width:15px; height:15px;" />
+                                    Remove Current Image
+                                </a>
+                            </div>
+                            <div class="image_details">
+                                <label class="input_line image_title">
+                                    <input type="text" placeholder="Title" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="add-btn">Добавить</button>
+                </form>
+            </div>
+
+            <!-- СЛАЙД 2: форма для сложных вопросов (Duel) -->
+            <div class="swiper-slide">
+                <form asp-action="AddQuestion" method="post" id="addDuelQuestionForm" class="question-form">
+                    <p style="font-size:32px; font-weight:800;">Добавить новый сложный вопрос</p>
+
+                    <!-- Выпадающий список для выбора таблицы -->
+                    <select id="tableName2" name="TableName" required>
+                        <option value="">Выберите таблицу</option>
+                        @foreach (var table in Model)
+                        {
+                            <option value="@table">@table</option>
+                        }
+                    </select>
+
+                    <input type="text" name="QuestionText" placeholder="Текст сложного вопроса" required />
+                    <input type="text" name="CorrectAnswer" placeholder="Правильный ответ 1" required />
+                    <input type="text" name="CorrectAnswer2" placeholder="Правильный ответ 2" required />
+
+                    <textarea name="QuestionExplanataion" placeholder="Объяснение сложного вопроса"></textarea>
+
+                    <div class="setting image_picker">
+                        <div class="settings_wrap">
+                            <label class="drop_target">
+                                <div class="image_preview"></div>
+                                <img class="drop_target_img"
+                                     src="~/img/svg-icons/cloud-arrow-up-solid.svg"
+                                     alt="Выбрать из загрузок" />
+                                <input id="inputFile" name="ImageFile" type="file" required />
+                            </label>
+
+                            <div class="settings_actions vertical">
+                                <a data-action="choose_from_uploaded">
+                                    <img src="~/img/svg-icons/image-solid.svg"
+                                         alt="Выбрать из загрузок"
+                                         style="width:15px; height:15px;" />
+                                    Choose from Uploads
+                                </a>
+                                <a class="disabled" data-action="remove_current_image">
+                                    <img src="~/img/svg-icons/trash-solid.svg"
+                                         alt="Удалить текущую иконку"
+                                         style="width:15px; height:15px;" />
+                                    Remove Current Image
+                                </a>
+                            </div>
+                            <div class="image_details">
+                                <label class="input_line image_title">
+                                    <input type="text" placeholder="Title" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="add-btn">Добавить вопрос</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Подключаем Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Подключение jQuery (для drag/drop примера) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Инициализация Swiper без стрелок и пагинации -->
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            effect: "flip",
+            grabCursor: true,
+            loop: false,              // Можем выключить loop, чтобы не листалось "по кругу"
+            allowTouchMove: false     // Отключаем ручное перелистывание (чтобы flip был только программно)
+        });
+
+        // 1) Обычная форма
+        document.getElementById("addQuestionForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+
+            fetch("/Admin/AddQuestion", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Допустим, переворачиваем на 1 слайд вперёд и возвращаем
+                    swiper.slideNext();
+                    setTimeout(() => {
+                        document.getElementById("addQuestionForm").reset();
+                        swiper.slidePrev();
+                    }, 600);
+                } else {
+                    alert("Ошибка: " + data.message);
+                }
+            })
+            .catch(error => console.error("Ошибка:", error));
+        });
+
+        // 2) Hard-форма
+        document.getElementById("addDuelQuestionForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+
+            fetch("/Admin/AddQuestion", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Flip, reset, вернёмся назад
+                    swiper.slidePrev();
+                    setTimeout(() => {
+                        document.getElementById("addDuelQuestionForm").reset();
+                    }, 600);
+                } else {
+                    alert("Ошибка: " + data.message);
+                }
+            })
+            .catch(error => console.error("Ошибка:", error));
+        });
+
+        // Переключение между слайдами в зависимости от выбора таблицы
+        document.getElementById("tableName").addEventListener("change", function () {
+            var selectedTable = this.value || "";
+
+            if (selectedTable.startsWith("Сложный")) {
+                swiper.slideTo(1); // Переключаемся на слайд 2
+                document.getElementById("tableName").value = ""; // Сбрасываем прошлый выбор
+                document.getElementById("tableName2").value = selectedTable; // Устанавливаем в новом
+            } else {
+                swiper.slideTo(0);
+            }
+        });
+
+        // Переключение обратно
+        document.getElementById("tableName2").addEventListener("change", function() {
+            var selectedTable = this.value || "";
+
+            if (selectedTable.startsWith("Легкий")) {
+                swiper.slideTo(0);
+                document.getElementById("tableName2").value = ""; // Сбрасываем прошлый выбор
+                document.getElementById("tableName").value = selectedTable; // Устанавливаем в первом
+            } else {
+                swiper.slideTo(1);
+            }
+        });
+
+    </script>
+
+    <!-- Пример вашего drag/drop (добавьте аналогично на 2 форму при желании) -->
+    <script>
+        var $dropzone = $('.image_picker'),
+            $droptarget = $('.drop_target'),
+            $dropinput = $('#inputFile'),
+            $dropimg = $('.image_preview'),
+            $remover = $('[data-action="remove_current_image"]');
+
+        $dropzone.on('dragover', function() {
+          $droptarget.addClass('dropping');
+          return false;
+        });
+
+        $dropzone.on('dragend dragleave', function() {
+          $droptarget.removeClass('dropping');
+          return false;
+        });
+
+        $dropzone.on('drop', function(e) {
+          $droptarget.removeClass('dropping');
+          $droptarget.addClass('dropped');
+          $remover.removeClass('disabled');
+          e.preventDefault();
+
+          var file = e.originalEvent.dataTransfer.files[0],
+              reader = new FileReader();
+
+          reader.onload = function(event) {
+            $dropimg.css('background-image', 'url(' + event.target.result + ')');
+          };
+
+          reader.readAsDataURL(file);
+          return false;
+        });
+
+        $dropinput.change(function(e) {
+          $droptarget.addClass('dropped');
+          $remover.removeClass('disabled');
+          $('.image_title input').val('');
+
+          var file = $dropinput.get(0).files[0],
+              reader = new FileReader();
+
+          reader.onload = function(event) {
+            $dropimg.css('background-image', 'url(' + event.target.result + ')');
+          }
+          reader.readAsDataURL(file);
+        });
+
+        $remover.on('click', function() {
+          $dropimg.css('background-image', '');
+          $droptarget.removeClass('dropped');
+          $remover.addClass('disabled');
+          $('.image_title input').val('');
+        });
+    </script>
+</body>
