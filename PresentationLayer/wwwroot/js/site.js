@@ -1,4 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
+    createbackParticles();
     const backButton = document.getElementById('backButton');
 
     if (backButton) {
@@ -12,8 +13,8 @@
 
 //анимации фона
 // Create animated particles
-function createLoginParticles() {
-    const container = document.getElementById('loginParticles');
+function createbackParticles() {
+    const container = document.getElementById('backParticles');
     if (!container) return;
 
     const particleCount = 40;
@@ -21,7 +22,7 @@ function createLoginParticles() {
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         const sizeClass = ['small', 'medium', 'large'][Math.floor(Math.random() * 3)];
-        particle.className = `login-particle ${sizeClass}`;
+        particle.className = `particles ${sizeClass}`;
 
         particle.style.left = Math.random() * 100 + '%';
         particle.style.animationDelay = Math.random() * 20 + 's';
@@ -30,10 +31,4 @@ function createLoginParticles() {
         container.appendChild(particle);
     }
 }
-
-// Initialize everything
-document.addEventListener('DOMContentLoaded', function () {
-    // Create particles
-    createLoginParticles();
-});
 

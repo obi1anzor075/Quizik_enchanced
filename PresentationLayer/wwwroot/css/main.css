@@ -224,8 +224,37 @@
     color: rgba(255, 255, 255, 0.9);
     font-weight: 500;
     cursor: pointer;
-    user-select: none;
+    user-select: none;    
+    animation: authInputSlide 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.65s backwards;
+    font-size:16px;
 }
+
+    .auth-checkbox-label a {
+        color: #41CAC2;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+        .auth-checkbox-label a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #41CAC2, #866efb);
+            transition: width 0.3s ease;
+        }
+
+        .auth-checkbox-label a:hover {
+            color: #c021c3;
+        }
+
+            .auth-checkbox-label a:hover::after {
+                width: 100%;
+            }
 
 /* Button styles */
 .auth-submit-btn {

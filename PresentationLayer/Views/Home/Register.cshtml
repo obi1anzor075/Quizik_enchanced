@@ -31,7 +31,9 @@
         </form>
     </div>
     <div class="logo__img">
-        <img src="~/img/logo.svg" class="main__logo_landing" alt="Логотип Brand-battles" />
+        <div class="auth-logo">
+            <span class="auth-logo-text">Quizik</span>
+        </div>
     </div>
     <div class="log__in" style="display: none">
         <button type="button" class="button">
@@ -45,72 +47,101 @@
     <div class="ctr">
         <div class="field_wrapper">
             <div class="play__field">
-                <form id="playForm" asp-action="Register" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="register-wrapper">
-                        <div class="input__name_wrapper">
-                            <input asp-for="UserName" class="input__name" required type="text" id="userName" name="userName" placeholder="Имя" />
-                            <span class="validator_error text-danger" asp-validation-for="UserName"></span>
-                        </div>
+                <div class="auth-form-container">
+                    <form id="playForm" asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="auth-error"></div>
 
-                        <div class="input__email_wrapper">
-                            <input asp-for="Email" class="input__email" required type="email" id="email" name="email" placeholder="Почта" />
-                            <span class="validator_error text-danger" asp-validation-for="Email"></span>
-                        </div>
+                    <div class="auth-input-wrapper">
+                        <input asp-for="UserName"
+                               class="auth-input"
+                               required
+                               type="text"
+                               id="username"
+                               name="userName"
+                               placeholder=" " />
+                        <label class="auth-label" for="username">Имя</label>
+                    </div>
 
-                        <div class="input__password_wrapper">
-                            <input asp-for="Password" class="input__password" required type="password" id="password" name="password" placeholder="Пароль" />
-                            <span class="validator_error text-danger" asp-validation-for="Password"></span>
-                        </div>
-                        <input type="hidden" name="token" value="@Context.Request.Query["token"]" />
+                    <div class="auth-input-wrapper">
+                        <input asp-for="Email"
+                               class="auth-input"
+                               required
+                               type="email"
+                               id="username"
+                               name="Email"
+                               placeholder=" " />
+                        <label class="auth-label" for="username">Электронная почта</label>
+                    </div>
 
-                        <div class="input__password_wrapper">
-                            <input asp-for="ConfirmPassword" class="input__password" required type="password" id="ConfirmPassword" name="ConfirmPassword" placeholder="Подтверждение пароля" />
-                            <span class="validator_error text-danger" asp-validation-for="ConfirmPassword"></span>
-                        </div>
+                    <div class="auth-input-wrapper">
+                        <input asp-for="Password"
+                               class="auth-input"
+                               required
+                               type="password"
+                               id="password"
+                               name="password"
+                               placeholder=" " />
+                        <label class="auth-label" for="password">Пароль</label>
+                    </div>
 
-                        <div class="checkbox__wrapper">
-                            <div class="checkbox">
-                                <div class="checkbox-wrapper-12">
-                                    <div class="cbx">
-                                        <input asp-for="TermOfService" id="cbx-12" type="checkbox" />
-                                        <label for="cbx-12"></label>
-                                        <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
-                                            <path d="M2 8.36364L6.23077 12L13 2"></path>
-                                        </svg>
-                                    </div>
-                                    <span class="checkbox-label">Согласен с<a class="aqua-text" href=""> Условиями использования</a></span>
-                                </div>
-                            </div>
-                            <span class="validator_error text-danger" asp-validation-for="TermOfService"></span>
-                        </div>
+                    <input type="hidden" name="token" value="@Context.Request.Query["token"]" />
 
-                        <input type="submit" value="Играть" id="send" class="button button__play" />
-                        <div class="redirect-to-login">Уже есть аккаунт?<a class="aqua-text" asp-controller="Home" asp-action="Login"> Войти</a></div>
+                    <div class="auth-input-wrapper">
+                        <input asp-for="ConfirmPassword"
+                               class="auth-input"
+                               required
+                               type="password"
+                               id="ConfirmPassword"
+                               name="ConfirmPassword"
+                               placeholder=" " />
+                        <label class="auth-label" for="password">Подтверждение пароля</label>
+                    </div>
+
+                    <div class="auth-checkbox-wrapper">
+                        <label class="auth-checkbox-container">
+                            <input asp-for="TermOfService" type="checkbox" class="auth-checkbox-input" />
+                            <span class="auth-checkbox-visual"></span>
+                        </label>
+                        <label class="auth-checkbox-label" for="TermOfService">Согласен с<a asp-controller="Home" asp-action="Login"> Условиями использования</a></label>
+                    </div>
+
+
+                    <button type="submit" class="auth-submit-btn">
+                        <span>Войти в игру</span>
+                    </button>
+
+                    <div class="auth-redirect">
+                        Уже есть аккаунт? <a asp-controller="Home" asp-action="Login">Войти</a>
                     </div>
                 </form>
-            </div>
-        </div>
 
-        <div class="other_wrapper">
-            <span>ИЛИ</span>
-            <hr />
-        </div>
+                    <div class="auth-divider">
+                    <span>или</span>
+                </div>
 
-        <div class="field_wrapper">
-            <div class="google__login">
-                <div id="g_id_onload"
+                    <div id="g_id_onload"
                      data-client_id="451296040503-18sveltvp6o2lfhlnr4490a6kb8o9sae.apps.googleusercontent.com"
                      data-login_uri="@Url.Action("LoginGoogle", "Home")"
                      data-auto_prompt="false">
                 </div>
-                <div class="g_id_signin"
-                     data-type="icon"
-                     data-shape="circle"
+                    <button class="auth-social-btn" onclick="document.querySelector('.g_id_signin').click()">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M19.8 10.2c0-.7-.1-1.4-.2-2H10v3.8h5.5c-.2 1.2-.9 2.3-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z" fill="#4285F4" />
+                        <path d="M10 20c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 .9-3.4.9-2.6 0-4.8-1.8-5.6-4.2H1.1v2.6C2.7 17.8 6.1 20 10 20z" fill="#34A853" />
+                        <path d="M4.4 11.8c-.4-1.2-.4-2.4 0-3.6V5.6H1.1C-.3 8.3-.3 11.7 1.1 14.4l3.3-2.6z" fill="#FBBC05" />
+                        <path d="M10 4c1.5 0 2.8.5 3.8 1.5l2.9-2.9C15 1 12.7 0 10 0 6.1 0 2.7 2.2 1.1 5.6l3.3 2.6C5.2 5.8 7.4 4 10 4z" fill="#EA4335" />
+                    </svg>
+                    <span>Войти через Google</span>
+                </button>
+                    <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
                      data-theme="outline"
                      data-text="signin_with"
                      data-size="large"
-                     data-logo_alignment="left">
+                     data-logo_alignment="left"
+                     style="display: none;">
+                </div>
                 </div>
             </div>
         </div>
@@ -125,29 +156,47 @@
 <!-- Подключение Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-@*Скрипты для переключателя языков*@
 <script>
-    // Получение выбранного языка из Cookie
-    document.addEventListener("DOMContentLoaded", function () {
-        console.log("DOM загружен!");
 
-        // Получаем .AspNetCore.Culture из cookie
+    // Input focus effects
+    function addInputEffects() {
+        const inputs = document.querySelectorAll('.auth-input');
+
+        inputs.forEach(input => {
+            // Add focus particle effect
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+
+            // Check if input has value on load
+            if (input.value) {
+                input.parentElement.classList.add('focused');
+            }
+        });
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // Add input effects
+        addInputEffects();
+
+        // Language selector logic
         const cookies = document.cookie.split('; ').find(row => row.startsWith('.AspNetCore.Culture'));
-
         if (cookies) {
             const cookieValue = cookies.split('=')[1];
             const selectedCookie = decodeURIComponent(cookieValue);
-            console.log("Cookie найдено:", selectedCookie);
-
-            // Разбираем строку cookie (c=en-US|uic=en-US)
             const parts = selectedCookie.split('|');
             const culturePart = parts.find(part => part.startsWith('c='));
 
             if (culturePart) {
                 const cultureValue = culturePart.split('=')[1];
-                console.log("Выбранный язык:", cultureValue);
-
-                // Устанавливаем текущий флаг
                 const currentFlag = document.getElementById("currentFlag");
                 const flagMap = {
                     "ru-RU": "https://hatscripts.github.io/circle-flags/flags/ru.svg",
@@ -158,19 +207,26 @@
                 if (flagMap[cultureValue]) {
                     currentFlag.style.backgroundImage = `url(${flagMap[cultureValue]})`;
                     document.getElementById("selectedLanguage").value = cultureValue;
-                    console.log("Установлен флаг:", flagMap[cultureValue]);
-                } else {
-                    console.warn("Неизвестный язык в cookie:", cultureValue);
                 }
-            } else {
-                console.warn("Не удалось найти 'c=' в cookie:", cookieValue);
             }
-        } else {
-            console.warn("Cookie .AspNetCore.Culture не найдено!");
+        }
+
+        // Form validation animation
+        const form = document.getElementById('playForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('.auth-submit-btn');
+                if (submitBtn) {
+                    submitBtn.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        submitBtn.style.transform = '';
+                    }, 200);
+                }
+            });
         }
     });
-</script>
-<script>
+
+    // Language dropdown functions
     function toggleDropdown() {
         document.getElementById('flagDropdown').classList.toggle('show');
     }
@@ -181,13 +237,17 @@
         document.querySelector(".language-selector").submit();
     }
 
-    // Закрыть выпадающий список при клике вне его
+    // Close dropdown when clicking outside
     document.addEventListener("click", function (event) {
         if (!event.target.closest(".language-selector")) {
-            document.getElementById('flagDropdown').classList.remove('show');
+            const dropdown = document.getElementById('flagDropdown');
+            if (dropdown) {
+                dropdown.classList.remove('show');
+            }
         }
     });
 </script>
+
 
 
 @section Scripts {

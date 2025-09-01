@@ -123,25 +123,6 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <script>
-    // Create animated particles
-    function createLoginParticles() {
-        const container = document.getElementById('loginParticles');
-        if (!container) return;
-
-        const particleCount = 40;
-
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            const sizeClass = ['small', 'medium', 'large'][Math.floor(Math.random() * 3)];
-            particle.className = `login-particle ${sizeClass}`;
-
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 20 + 's';
-            particle.style.animationDuration = (20 + Math.random() * 10) + 's';
-
-            container.appendChild(particle);
-        }
-    }
 
     // Input focus effects
     function addInputEffects() {
@@ -168,8 +149,6 @@
 
     // Initialize everything
     document.addEventListener('DOMContentLoaded', function() {
-        // Create particles
-        createLoginParticles();
 
         // Add input effects
         addInputEffects();
