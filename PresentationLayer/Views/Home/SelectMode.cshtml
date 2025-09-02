@@ -58,48 +58,46 @@
                         <a asp-action="Logout">Выход</a>
                     </div>
                     </div>
-                    <div id="body">
-                        <div id="chat-circle" class="btn btn-raised">
-                            <div id="chat-overlay"></div>
-                            <i class="material-icons">
-                                <svg width="42px" height="42px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M22 5C22 6.65685 20.6569 8 19 8C17.3431 8 16 6.65685 16 5C16 3.34315 17.3431 2 19 2C20.6569 2 22 3.34315 22 5Z" fill="#1C274C" />
-                                    <path opacity="0.5" d="M15.2347 2.53476C14.2201 2.1881 13.132 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39938 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88836 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.868 21.8119 9.77987 21.4652 8.76526C20.7572 9.22981 19.9101 9.5 19 9.5C16.5147 9.5 14.5 7.48528 14.5 5C14.5 4.08987 14.7702 3.24284 15.2347 2.53476Z" fill="#1C274C" />
-                                </svg>
-                            </i>
-                        </div>
-                        
-                        <div class="chat-box">
-                            <div class="chat-box-header ">
-                                Чат
-                                <span class="chat-box-toggle">
-                                    <i class="material-icons">
-                                        <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" fill="#1C274C" />
-                                        </svg>
-                                    </i>
-                                </span>
-                            </div>
-                            <div class="chat-box-body ">
-                                
-                                <div class="chat-box-overlay ">
-                                </div>
-                                <div class="chat-logs" id="chat-logs">
-                                    
-
-
-                                       
-                                </div>
-                            </div><!--chat-log -->
-                            <div id="chat" class="chat-input">
-                                <form>
-                                    <input type="text" id="chat-input" placeholder="Send a message..." />
-                                    <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#5A5EB9"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="#5A5EB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></i></button>
-                                </form>
-                            </div>
-                        </div>
-                            
+                     <div id="body">
+                    <!-- Chat Circle -->
+                    <div id="chat-circle" class="btn btn-raised">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 5C22 6.65685 20.6569 8 19 8C17.3431 8 16 6.65685 16 5C16 3.34315 17.3431 2 19 2C20.6569 2 22 3.34315 22 5Z" fill="currentColor" />
+                            <path opacity="0.8" d="M15.2347 2.53476C14.2201 2.1881 13.132 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39938 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88836 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.868 21.8119 9.77987 21.4652 8.76526C20.7572 9.22981 19.9101 9.5 19 9.5C16.5147 9.5 14.5 7.48528 14.5 5C14.5 4.08987 14.7702 3.24284 15.2347 2.53476Z" fill="currentColor" />
+                        </svg>
                     </div>
+
+                    <!-- Chat Box -->
+                    <div class="chat-box">
+                        <div class="chat-box-header">
+                            <div class="online-indicator"></div>
+                            Чат
+                            <span class="chat-box-toggle">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" fill="currentColor" />
+                                </svg>
+                            </span>
+                        </div>
+
+                        <div class="chat-box-body">
+                            <div class="chat-logs" id="chat-logs">
+
+                            </div>
+                        </div>
+
+                        <!-- Chat Input -->
+                        <div class="chat-input">
+                            <form>
+                                <input type="text" id="chat-input" placeholder="Введите сообщение..." />
+                                <button type="submit" class="chat-submit" id="chat-submit">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
     </header>
@@ -147,194 +145,213 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.12/signalr.min.js" ></script>
 <script src="~/js/swiper.js"></script>
 <script>
-        $(document).ready(function () {
-            // Установка соединения с хабом SignalR
-            const connection = new signalR.HubConnectionBuilder()
-                .withUrl("/gameHub") // Укажите URL вашего хаба SignalR
-                .build();
+    $(document).ready(function () {
+        // === SignalR connection ===
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/gameHub")
+            .build();
 
-            connection.start().then(async function () {
+        // UI elements
+        const $chatCircle = $("#chat-circle");
+        const $chatBox = $(".chat-box");
+        const $chatLog = $(".chat-log");
+        const $chatLogs = $(".chat-logs");
+        const $chatBoxToggle = $(".chat-box-toggle");
+        const $chatLogToggle = $(".chat-log-toggle");
+        const $chatSubmit = $("#chat-submit");
+        const $chatInput = $("#chat-input");
+
+        // Random avatars list
+        const randomAvatars = [
+            '/img/chat-logo/logo1.svg',
+            '/img/chat-logo/logo2.svg',
+            '/img/chat-logo/logo3.svg',
+            '/img/chat-logo/logo4.svg'
+        ];
+
+        // Avatar functions
+        function generateAvatar(userName) {
+            if (userName === 'Quizik') {
+                return '/img/chat-logo/Admin-logo.webp';
+            } else {
+                const randomIndex = Math.floor(Math.random() * randomAvatars.length);
+                return randomAvatars[randomIndex];
+            }
+        }
+
+        function getAvatar(userName) {
+            let avatar = localStorage.getItem(`avatar_${userName}`);
+            if (!avatar) {
+                avatar = generateAvatar(userName);
+                localStorage.setItem(`avatar_${userName}`, avatar);
+            }
+            return avatar;
+        }
+
+        // Generate message HTML. isSelf controls 'self' class and label "Вы:"
+        function generateMessageHTML(userName, message, isSelf = false) {
+            const avatarSrc = getAvatar(userName || 'Guest');
+            const userLabel = isSelf ? 'Вы' : userName;
+            const selfClass = isSelf ? ' self' : '';
+            return `
+                <div class="chat-msg${selfClass}">
+                    <span class="msg-avatar">
+                        <img class="avatar-img" src="${avatarSrc}" alt="avatar">
+                    </span>
+                    <div class="cm-msg-text"><strong>${userLabel}:</strong> ${escapeHtml(message)}</div>
+                </div>
+            `;
+        }
+
+        // Simple HTML escape
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Scroll chat to bottom
+        function scrollChatToBottom() {
+            requestAnimationFrame(function () {
+                const chat = document.getElementById("chat-logs");
+                if (chat) chat.scrollTop = chat.scrollHeight;
+            });
+        }
+
+        // Local state
+        let localUserName = '';
+
+        // Start connection and get username
+        connection.start()
+            .then(async function () {
                 console.log("SignalR connection established.");
-
-                let userName = '';
-
                 try {
-                    // Получение имени пользователя
                     const response = await fetch('/Home/GetUserName');
                     const data = await response.json();
-                    userName = data.userName;
+                    localUserName = data.userName || '';
 
-                    if (userName) {
-                        console.log("Retrieved user name: " + userName);
-                        await localStorage.setItem('userName', userName);
-                        await joinChat(userName);
+                    if (localUserName) {
+                        console.log("Retrieved user name: " + localUserName);
+                        localStorage.setItem('userName', localUserName);
+                        joinChat(localUserName);
                     } else {
                         console.log("User name not found in cookies.");
                     }
                 } catch (error) {
                     console.error('Error fetching user name:', error);
                 }
-
-            }).catch(function (err) {
+            })
+            .catch(function (err) {
                 console.error(err.toString());
             });
 
-
-            // Функция для присоединения к чату
-            function joinChat(userName) {
-                var connectionInfo = {
-                    userName: userName,
-                    chatRoom: "Global" // Укажите нужную чат-комнату
-                };
-
-                connection.invoke("JoinChat", connectionInfo).then(function () {
-                    $(".chat-box").show('scale');
-                    $(".chat-log").hide('scale');
-                    $("#chat-circle").hide(); // Скрыть chat circle при показе chat box
-
-                    // Отправка сообщения "добро пожаловать"
-                }).catch(function (err) {
+        // Join chat on the hub
+        function joinChat(userName) {
+            const connectionInfo = { userName: userName, chatRoom: "Global" };
+            connection.invoke("JoinChat", connectionInfo)
+                .then(function () {
+                    $chatBox.show('scale');
+                    $chatLog.hide('scale');
+                    $chatCircle.hide(); // hide circle when box shown
+                    scrollChatToBottom();
+                })
+                .catch(function (err) {
                     console.error(err.toString());
                 });
+        }
+
+        // Send message through SignalR
+        async function sendMessage(userName, message) {
+            if (!connection) return;
+            try {
+                await connection.invoke("SendMessage", userName, message);
+            } catch (err) {
+                console.error(err.toString());
             }
+        }
 
-
-
-            // Функция для отправки сообщения
-            function sendMessage(userName, message) {
-                connection.invoke("SendMessage", userName, message).then(function () {
-                    @*
-                    console.log("Message sent.");
-                *@
-                }).catch(function (err) {
-                    console.error(err.toString());
-                });
+        // Receive messages from SignalR
+        connection.on("ReceiveMessage", function (userName, message) {
+            // Avoid duplicating local message if server echoes back the same user
+            const storedLocalUser = localStorage.getItem('userName') || localUserName;
+            if (storedLocalUser && userName === storedLocalUser) {
+                // Ignore server echo from same user to prevent duplicate
+                return;
             }
+            $chatLogs.append(generateMessageHTML(userName, message, false));
+            scrollChatToBottom();
+        });
 
-            // Список случайных аватаров
-            const randomAvatars = [
-                '/img/chat-logo/logo1.svg',
-                '/img/chat-logo/logo2.svg',
-                '/img/chat-logo/logo3.svg',
-                '/img/chat-logo/logo4.svg'
-            ];
+        // === UI interactions (integrated demo logic) ===
 
-            // Функция для генерации или получения сохраненного аватара
-            function getAvatar(userName) {
-                let avatar = localStorage.getItem(`avatar_${userName}`);
-                if (!avatar) {
-                    avatar = generateAvatar(userName);
-                    localStorage.setItem(`avatar_${userName}`, avatar);
-                }
-                return avatar;
-            }
+        // Click chat circle -> show chat box
+        $chatCircle.off('click').on('click', function () {
+            $chatCircle.hide('scale');
+            $chatBox.show('scale');
+            // If username known, ensure it's stored in localStorage
+            if (localUserName) localStorage.setItem('userName', localUserName);
+        });
 
-            // Функция для генерации аватара
-            function generateAvatar(userName) {
-                if (userName === 'Quizik') {
-                return '/img/chat-logo/Admin-logo.webp'; // Специальный аватар для Quizik
-                } else {
-                    const randomIndex = Math.floor(Math.random() * randomAvatars.length);
-                    return randomAvatars[randomIndex];
-                }
-            }
-
-            // Функция для генерации HTML кода сообщения
-            function generateMessageHTML(userName, message) {
-                const avatarSrc = getAvatar(userName);
-
-                return '<div class="chat-msg">' +
-                    '<span class="msg-avatar">' +
-                    '<img class="avatar-img" src="' + avatarSrc + '" alt="avatar">' +
-                    '</span>' +
-                    '<div class="cm-msg-text"><strong>' + userName + ':</strong> ' + message + '</div>' +
-                    '</div>';
-            }
-
-
-
-            // Переменные для отслеживания состояния chat box и chat log
-            var chatCircle = $("#chat-circle");
-            var chatLog = $(".chat-log");
-            var chatBox = $(".chat-box");
-            var chatBoxToggle = $(".chat-box-toggle");
-            var chatLogToggle = $(".chat-log-toggle");
-
-            // Показать chat log при клике на chat circle
-            chatCircle.click(function () {
-                chatLog.toggle('scale');
-            });
-
-            // Закрытие chat log при клике на toggle
-            chatLogToggle.click(function () {
-                chatLog.toggle('scale');
-            });
-
-            // Закрытие chat box при клике на toggle
-            chatBoxToggle.click(function () {
-                chatBox.toggle('scale', function () {
-                    chatCircle.show('scale'); // Показать chat circle после скрытия chat box
-                });
-            });
-            // Отправка сообщения из chat box
-            $("#chat-submit").click(async function (e) {
-                e.preventDefault();
-                var message = $("#chat-input").val();
-                var userName = localStorage.getItem('userName');
-
-                if (message.trim() !== '') {
-                    await sendMessage(userName, message);
-                    $("#chat-input").val('');
-
-                    // Перемещение вниз чата с использованием requestAnimationFrame
-                    requestAnimationFrame(function () {
-                        const chat = document.getElementById("chat-logs");
-                        chat.scrollTop = chat.scrollHeight;
-                    });
-                }
-            });
-
-            // Обработка получения сообщения от сервера
-            connection.on("ReceiveMessage", function (userName, message) {
-                $(".chat-logs").append(generateMessageHTML(userName, message));
-
-                // Перемещение вниз чата при получении нового сообщения
-                requestAnimationFrame(function() {
-                    const chat = document.getElementById("chat-logs");
-                    chat.scrollTop = chat.scrollHeight;
-                });
-            });
-            // Обработчик событий для chat circle и chat box toggle
-            $("#chat-circle").click(function () {
-                chatCircle.hide('scale');
-                chatBox.show('scale');
-            });
-
-            $(".chat-box-toggle").click(function () {
-                chatBox.hide('scale', function () {
-                    chatCircle.show('scale'); // Показать chat circle после скрытия chat box
-                });
+        // Chat box toggle -> hide chat box and show circle
+        $chatBoxToggle.off('click').on('click', function () {
+            $chatBox.hide('scale', function () {
+                $chatCircle.show('scale');
             });
         });
 
-
-        $(function () {
-            $("#chat-submit").click(function (e) {
-                e.preventDefault();
-                var msg = $("#chat-input").val();
-                if (msg.trim() == '') {
-
-                    return false;
-                }
-            });
-
-            $(document).delegate(".chat-btn", "click", function () {
-                var value = $(this).attr("chat-value");
-                var name = $(this).html();
-                $("#chat-input").attr("disabled", false);
-                generate_message(name, 'self');
-            });
+        // Chat log toggle (if used separately)
+        $chatLogToggle.off('click').on('click', function () {
+            $chatLog.toggle('scale');
         });
+
+        // Submit message (button)
+        $chatSubmit.off('click').on('click', async function (e) {
+            e.preventDefault();
+            const message = $chatInput.val() || '';
+            const userName = localStorage.getItem('userName') || localUserName || 'Guest';
+
+            if (message.trim() === '') {
+                return;
+            }
+
+            // Append local message immediately
+            $chatLogs.append(generateMessageHTML(userName, message, true));
+            scrollChatToBottom();
+
+            // Clear input
+            $chatInput.val('');
+
+            // Send to server
+            await sendMessage(userName, message);
+        });
+
+        // Send on Enter
+        $chatInput.off('keypress').on('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                $chatSubmit.click();
+            }
+        });
+
+        // Delegate for quick chat buttons (if present)
+        $(document).off('click', '.chat-btn').on('click', '.chat-btn', function () {
+            const value = $(this).attr("chat-value");
+            const name = $(this).html();
+            $chatInput.attr("disabled", false);
+            // Insert quick message and trigger send
+            $chatInput.val(value);
+            $chatSubmit.click();
+        });
+
+        // Ensure initial visibility: show circle, hide box if nothing else
+        if (!$chatBox.is(':visible')) {
+            $chatCircle.show();
+            $chatBox.hide();
+        }
+    });
 
         function setUserNameCookie(userName) {
             // Set the userName cookie

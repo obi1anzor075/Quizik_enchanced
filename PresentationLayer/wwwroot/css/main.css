@@ -10,6 +10,7 @@
     animation: authFormReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     width: 100%;
+    margin-bottom: 50px;
 }
 
     .auth-form-container::before {
@@ -19,7 +20,7 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, .play__field, 0.1), transparent);
         animation: authFormShimmer 4s ease-in-out infinite;
     }
 
@@ -465,7 +466,6 @@
     padding: 0 !important;
     width: 100% !important;
     max-width: 500px !important;
-    margin: 0 auto !important;
 }
 
 /* Hide old form elements */
