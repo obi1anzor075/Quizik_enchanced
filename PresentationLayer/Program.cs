@@ -19,6 +19,7 @@ using PresentationLayer.Utilities;
 using Microsoft.AspNetCore.Components.Forms;
 using PresentationLayer;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -155,8 +156,17 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/Home/Logout";
     options.AccessDeniedPath = "/Home/AccessDenied";
     options.Cookie.SameSite = SameSiteMode.None;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; //для http
 });
+
+// Включаем чтение X-Forwarded-* (обязательно до UseAuthentication/UseAuthorization/UseHttpsRedirection)
+var forwardedOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+};
+// если nginx в docker или IP неизвестен — очистим known lists (опционально, безопаснее указать конкретный прокси)
+forwardedOptions.KnownNetworks.Clear();
+forwardedOptions.KnownProxies.Clear();
 
 // Регистрация LocalizedIdentityErrorDescriber
 builder.Services.AddScoped<LocalizedIdentityErrorDescriber>();
