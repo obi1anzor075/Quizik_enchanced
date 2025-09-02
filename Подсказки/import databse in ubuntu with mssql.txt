@@ -1,0 +1,25 @@
+docker exec -it mssql /bin/bash
+
+curl -o sqlpackage.zip -L https://aka.ms/sqlpackage-linux
+unzip sqlpackage.zip -d /opt/sqlpackage
+chmod +x /opt/sqlpackage/sqlpackage
+
+/opt/sqlpackage/sqlpackage /a:Import /sf:/var/opt/mssql/backups/DataStoreDB.bacpac /tdn:DataStoreDB /tsn:localhost /tu:sa /tp:Fast192837465 /ttsc:true
+
+
+# Запуск контейнера с правами суперпользователя
+docker exec -u 0 -it mssql /bin/bash
+
+# Установка curl и unzip
+apt-get update
+apt-get install -y curl unzip
+
+# Загрузка и установка sqlpackage
+curl -o sqlpackage.zip -L https://aka.ms/sqlpackage-linux
+unzip sqlpackage.zip -d /opt/sqlpackage
+chmod +x /opt/sqlpackage/sqlpackage
+
+# Импорт BACPAC-файла
+/opt/sqlpackage/sqlpackage /a:Import /sf:/var/opt/mssql/backups/DB/DataStoreDB.bacpac /tdn:DataStoreDB /tsn:localhost /tu:sa /tp:Fast192837465 /ttsc:true
+
+/opt/sqlpackage/sqlpackage /a:Import /sf:/var/opt/mssql/backups/pkiptdb/CustomIdentityDB.bacpac /tdn:CustomIdentityDB /tsn:localhost /tu:sa /tp:Fast192837465 /ttsc:true

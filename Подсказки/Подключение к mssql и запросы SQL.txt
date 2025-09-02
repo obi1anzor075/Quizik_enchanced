@@ -1,0 +1,20 @@
+Подключение и использование контейнера mssql
+
+1. Подключение к кнонтейнеру mssql
+docker exec -it mssql bash
+
+2. Подключение к mssql-tools для выполнения SQL запросов
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Fast192837465
+
+
+Получение название БД и списка все таблиц
+
+1. Нужно сделать запрос на вывод всех системных БД
+SELECT name
+FROM sys.databases
+GO
+
+2.Нужно сделать запрос на получение списка всех таблиц БД
+SELECT TABLE_NAME
+FROM INFORMATION_SCHEMA.TABLES
+GO

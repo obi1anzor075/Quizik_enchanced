@@ -1,0 +1,33 @@
+docker exec -it diary dotnet ef database update
+
+docker exec -it diary /bin/bash
+apt-get update && apt-get install -y curl
+curl http://mssql:1433
+
+
+docker-compose down
+docker-compose up --build
+
+docker exec -it mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Fast192837465
+SELECT name FROM sys.databases;
+GO
+
+
+
+
+2вариант
+Установка sqlcmd
+
+apt-get update && apt-get install -y curl apt-transport-https
+curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | tee /etc/apt/sources.list.d/msprod.list
+apt-get update && apt-get install -y mssql-tools unixodbc-dev
+
+
+/opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P Fast192837465
+
+
+SELECT name FROM sys.databases;
+GO
+
+Если ошибка подключения к БД TCP 40

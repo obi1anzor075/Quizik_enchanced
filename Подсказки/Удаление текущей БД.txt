@@ -1,0 +1,18 @@
+Подключение и использование контейнера mssql
+
+1. Подключение к кнонтейнеру mssql
+docker exec -it mssql bash
+
+2. Подключение к mssql-tools для выполнения SQL запросов
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Fast192837465
+
+3. Закрытие всех подключённых пользователей
+SELECT session_id
+FROM sys.dm_exec_sessions
+WHERE DB_NAME(database_id) = 'ИМЯ_БД';
+
+KILL session_id;
+
+4. Удаление БД
+DROP DATABASE ИМЯ_БД;
+GO
