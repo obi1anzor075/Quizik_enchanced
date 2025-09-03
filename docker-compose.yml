@@ -12,7 +12,8 @@ services:
       - database
       - redis
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__Sql=Server=database,1433;Database=DataStoreDB;User Id=sa;Password=Fast192837465;TrustServerCertificate=True
       - Redis__ConnectionString=redis:6379
     expose:
@@ -40,19 +41,20 @@ services:
       - "443:443"
     restart: always
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./certbot/www/:/var/www/certbot/:ro
-      - C:/cert:/etc/letsencrypt/live/quiz-go.ru:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs/quiz-go.ru/:/etc/ssl/quiz-go.ru/:ro
+      # - ./certbot/www/:/var/www/certbot/:rw     # certbot
     depends_on:
       - app
     networks:
       - quiz-dev
 
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+  # certbot
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   volumes:
+  #     - ./certbot/www/:/var/www/certbot/:rw
+  #     - ./certbot/conf/:/etc/letsencrypt/:rw
 
   redis:
     image: "redis:alpine"

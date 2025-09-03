@@ -1,13 +1,20 @@
 #!/bin/bash
 
-domains=(brand-battles.ru)
-email="shindin112@mail.ru" # Введите свой email здесь
+# Список доменов (первый элемент будет использоваться для пути)
+domains=(quiz-go.ru www.quiz-go.ru)
+email="obi1o@mail.ru"
 rsa_key_size=4096
-data_path="./data/certbot"
-staging=0 # Установите 1, если вы тестируете скрипт, чтобы избежать ограничения на количество запросов
+data_path="./certbot"
+staging=0                            # 1 = staging (тестовый режим), 0 = production
+
+# Команда docker compose (смените, если у вас только 'docker compose' доступен)
+DOCKER_COMPOSE_CMD=${DOCKER_COMPOSE_CMD:-"docker-compose"}
+
+# Берём основной домен (первый в списке)
+domain="${domains[0]}"
 
 if [ -d "$data_path" ]; then
-  read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
+  read -p "Existing data found for $domain. Continue and replace existing certificate? (y/N) " decision
   if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
     exit
   fi
@@ -21,32 +28,32 @@ if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/
   echo
 fi
 
-echo "### Creating dummy certificate for $domains ..."
-path="/etc/letsencrypt/live/$domains"
-mkdir -p "$data_path/conf/live/$domains"
-docker-compose run --rm --entrypoint "\
-  openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
+echo "### Creating dummy certificate for $domain ..."
+path="/etc/letsencrypt/live/$domain"
+mkdir -p "$data_path/conf/live/$domain"
+$DOCKER_COMPOSE_CMD run --rm --entrypoint "\
+  openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1 \
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
     -subj '/CN=localhost'" certbot
 echo
 
 echo "### Starting nginx ..."
-docker-compose up --force-recreate -d nginx
+$DOCKER_COMPOSE_CMD up --force-recreate -d nginx
 echo
 
-echo "### Deleting dummy certificate for $domains ..."
-docker-compose run --rm --entrypoint "\
-  rm -Rf /etc/letsencrypt/live/$domains && \
-  rm -Rf /etc/letsencrypt/archive/$domains && \
-  rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
+echo "### Deleting dummy certificate for $domain ..."
+$DOCKER_COMPOSE_CMD run --rm --entrypoint "\
+  rm -Rf /etc/letsencrypt/live/$domain && \
+  rm -Rf /etc/letsencrypt/archive/$domain && \
+  rm -Rf /etc/letsencrypt/renewal/$domain.conf" certbot
 echo
 
-echo "### Requesting Let's Encrypt certificate for $domains ..."
+echo "### Requesting Let's Encrypt certificate for ${domains[*]} ..."
 # Join $domains to -d args
 domain_args=""
-for domain in "${domains[@]}"; do
-  domain_args="$domain_args -d $domain"
+for d in "${domains[@]}"; do
+  domain_args="$domain_args -d $d"
 done
 
 # Select appropriate email arg
@@ -58,7 +65,7 @@ esac
 # Enable staging mode if needed
 if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
-docker-compose run --rm --entrypoint "\
+$DOCKER_COMPOSE_CMD run --rm --entrypoint "\
   certbot certonly --webroot -w /var/www/certbot \
     $staging_arg \
     $email_arg \
@@ -69,4 +76,4 @@ docker-compose run --rm --entrypoint "\
 echo
 
 echo "### Reloading nginx ..."
-docker-compose exec nginx nginx -s reload
+$DOCKER_COMPOSE_CMD exec nginx nginx -s reload
