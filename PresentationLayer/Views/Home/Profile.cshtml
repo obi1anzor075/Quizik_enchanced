@@ -3,11 +3,10 @@
 }
 
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Профиль";
 }
 
 <head>
-    <link rel="stylesheet" href="~/css/landing.css">
     <link rel="stylesheet" href="~/css/profile.css">
 </head>
 <body>
@@ -15,7 +14,14 @@
     <!-- Шапка (логотип, кнопки, язык и т.д.) -->
     <div class="head__part">
         <!-- Левая пустая колонка -->
-        <div></div>
+        <div>
+            <a href="@Url.Action("SelectMode", "Home")" class="back-button">
+                <svg class="back-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                </svg>
+                Назад
+            </a>
+        </div>
 
         <!-- Логотип по центру -->
         <div></div>
@@ -32,238 +38,213 @@
         </div>
     </div>
 
-    <!-- Основная часть - Страница профиля -->
-    <div class="ctr profile-ctr">
-        <!-- Блок с формой редактирования профиля -->
-        <div class="play__field" style="flex-direction: column; gap: 20px;">
-            <h2 style="color: #fff; margin-top: 0;text-align:center;">Профиль пользователя</h2>
-            <div class="play__field_wrapper">
-                <form asp-controller="Home" asp-action="UpdateProfile" class="play__field_content" method="post" enctype="multipart/form-data" style="width: 100%;">
-                    <!-- блок смены аватара -->
-                    <div class="avatar-upload">
-                        <div class="avatar-edit">
-                            <input asp-for="ProfilePicture" type="file" accept="image/*" id="avatar" name="avatar" />
-                            <label for="avatar"><img class="img-edit" src="~/img/pencil-solid.svg" alt="Alternate Text" /></label>
-                            <span class="validator_error text-danger" asp-validation-for="ProfilePicture"></span>
-                        </div>
-                        <div class="avatar-preview">
-                            <div id="imagePreview" style="background-image: url(@ViewBag.ProfilePicture);">
-                            </div>
-                        </div>
+    <!-- Main content -->
+    <main class="profile-main">
+        <!-- Profile Information Card -->
+        <div class="profile-card">
+            <h2 class="profile-card-title">Профиль пользователя</h2>
+
+            <form id="profileForm" asp-controller="Home" asp-action="UpdateProfile" enctype="multipart/form-data">
+                <!-- Avatar upload -->
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type="file" accept="image/*" id="avatar" name="avatar">
+                        <label for="avatar">
+                            <svg class="img-edit" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                            </svg>
+                        </label>
                     </div>
-
-                    <hr class="hr" style="width: -webkit-fill-available;" />
-
-                    <!-- Форма редактирования данных -->
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <!-- Имя -->
-                    <div class="input__name_wrapper">
-                        <label for="userName" style="color: white;">Имя</label>
-                        <input asp-for="Name" type="text" id="userName" class="input__name" placeholder="Ваше имя" value="@ViewBag.Name" required />
-                        <span class="validator_error text-danger" asp-validation-for="Name"></span>
+                    <div class="avatar-preview">
+                        <div id="imagePreview"></div>
                     </div>
+                </div>
 
-                    <!-- Email -->
-                    <div class="input__email_wrapper">
-                        <label for="userEmail" style="color: white;">Email</label>
-                        <input asp-for="Email" type="email" id="userEmail" class="input__email" placeholder="EMAIL" value="@ViewBag.Email" required />
-                        <span class="validator_error text-danger" asp-validation-for="Email"></span>
-                    </div>
+                <div class="profile-divider"></div>
 
-                    <!-- Кнопка сохранить изменения -->
-                    <button type="submit" class="button button__play">
-                        Сохранить
-                    </button>
-                </form>
-            </div>
-        </div>        
-        
-        <!-- Блок безопасность  -->
-        <div class="play__field" style="flex-direction: column; gap: 20px;">
-            <h2 style="color: #fff; margin-top: 0;text-align:center;">Безопасность</h2>
-            <div class="play__field_wrapper">
-                <form asp-controller="Home" asp-action="ChangePassword" method="post" enctype="multipart/form-data" class="play__field_content" id="changePasswordForm" style="width: 100%;">
-                    <div asp-validation-summary="ModelOnly" class="text-danger">xfzg</div>
-                    <span id="passwordError" class="text-danger"></span>
+                <!-- Name input -->
+                <div class="profile-input-group">
+                    <label class="profile-label" for="userName">Имя</label>
+                    <input type="text" id="userName" class="profile-input" placeholder="Ваше имя" required>
+                </div>
 
-                    <!-- Текущий пароль -->
-                    <div class="input__current_password_wrapperr">
-                        <label for="currentPassword" style="color: white;">Текущий пароль</label>
-                        <input type="password" id="currentPassword" class="input__password" placeholder="Текущий пароль" required />
-                        <span id="currentPasswordError" class="text-danger"></span>
-                    </div>
+                <!-- Email input -->
+                <div class="profile-input-group">
+                    <label class="profile-label" for="userEmail">Email</label>
+                    <input type="email" id="userEmail" class="profile-input" placeholder="Ваш email" required>
+                </div>
 
-                    <!-- Новый пароль -->
-                    <div class="input__new_password_wrapper">
-                        <label for="newPassword" style="color: white;">Новый пароль</label>
-                        <input type="password" id="newPassword" class="input__password" placeholder="Новый пароль" required />
-                        <span id="newPasswordError" class="text-danger"></span>
-                    </div>
-
-                    <!-- Подтверждение пароля -->
-                    <div class="input__confirm_new_password_wrapper">
-                        <label for="confirmPassword" style="color: white;">Повтор пароля</label>
-                        <input type="password" id="confirmPassword" class="input__password" placeholder="Повтор пароля" required />
-                        <span id="confirmPasswordError" class="text-danger"></span>
-                    </div>
-
-                    <hr class="hr" style="width: -webkit-fill-available;" />
-
-                    <div class="container">
-                        <!-- Блок настройки двухфакторной аутентификации -->
-                        <div class="twofa-section d-flex align-items-center justify-content-between flex-column">
-                            <div>
-                                <h5 style="text-align:center;">Стороннее приложение-аутентификатор</h5>
-                                <p>
-                                    При входе вам потребуется ввести код безопасности, предложенный аутентификатором.
-                                </p>
-                            </div>
-                            <div>
-                                @if (Model.TwoFactorEnabled)
-                                {
-                                    <!-- Если 2FA включена – кнопка для отключения -->
-                                    <button type="button" id="button-cancel" class="button button__play button-cancel disable-2fa" onclick="disable2FA()" style="width:fit-content; background-color:red;    box-shadow: 0px 4px 0px #570917;">
-                                        Отключить
-                                    </button>
-                                }
-                                else
-                                {
-                                    <!-- Если 2FA не включена – кнопка для включения (открывает модальное окно) -->
-                                    <button type="button" class="button button__play" data-bs-toggle="modal" data-bs-target="#googleAuthModal" style="width:fit-content;">
-                                        Включить
-                                    </button>
-                                }
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Кнопка сохранить изменения -->
-                    <button type="submit" class="button button__play">
-                        Сохранить
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Еще  -->
-        <div class="play__field" style="flex-direction: column; gap: 20px;">
-            <h2 style="color: #fff; margin-top: 0; text-align: center;">Ещё</h2>
-            <div class="play__field_wrapper">
-                <button type="button" class="button button__play" data-bs-toggle="modal" data-bs-target="#quizResultsModal" >
-                 История игр
+                <!-- Save button -->
+                <button type="submit" class="profile-button">
+                    Сохранить изменения
                 </button>
-
-                <a href="@Url.Action("PrivacyPolicy", "Home")" type="button" class="button button__play" style=" text-align: center;">
-                    Политика конфиденциальности
-                </a>
-
-                <a href="@Url.Action("CookiesPolicy", "Home")" type="button" class="button button__play" style=" text-align: center;">
-                    Политика Cookies
-                </a>
-
-                <a href="@Url.Action("TermsOfUse", "Home")" type="button" class="button button__play" style=" text-align: center;">
-                    Правила использования
-                </a>
-            </div>
-
+            </form>
+        
         </div>
-    </div>
+
+        <!-- Security Card -->
+        <div class="profile-card">
+            <h2 class="profile-card-title">Безопасность</h2>
+
+            <form id="securityForm">
+                <!-- Current password -->
+                <div class="profile-input-group">
+                    <label class="profile-label" for="currentPassword">Текущий пароль</label>
+                    <input type="password" id="currentPassword" class="profile-input" placeholder="Введите текущий пароль" required>
+                </div>
+
+                <!-- New password -->
+                <div class="profile-input-group">
+                    <label class="profile-label" for="newPassword">Новый пароль</label>
+                    <input type="password" id="newPassword" class="profile-input" placeholder="Введите новый пароль" required>
+                </div>
+
+                <!-- Confirm password -->
+                <div class="profile-input-group">
+                    <label class="profile-label" for="confirmPassword">Подтверждение пароля</label>
+                    <input type="password" id="confirmPassword" class="profile-input" placeholder="Повторите новый пароль" required>
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <!-- 2FA Section -->
+                <div class="twofa-section">
+                    <h5>Двухфакторная аутентификация</h5>
+                    <p>При входе вам потребуется ввести код безопасности, предложенный аутентификатором.</p>
+
+                    @if (Model.TwoFactorEnabled)
+                    {
+                        <!-- Если 2FA включена – кнопка для отключения -->
+                        <button type="button" id="button-cancel" class="profile-button" onclick="disable2FA()">
+                            Отключить
+                        </button>
+                    }
+                    else
+                    {
+                        <!-- Если 2FA не включена – кнопка для включения (открывает модальное окно) -->
+                        <button type="button" class="profile-button" id="toggle2FA">
+                            Включить 2FA
+                        </button>
+                    }
+                </div>
+
+                <!-- Save security button -->
+                <button type="submit" class="profile-button">
+                    Сохранить изменения
+                </button>
+            </form>
+        </div>
+
+        <!-- Additional Options Card -->
+        <div class="profile-card">
+            <h2 class="profile-card-title">Дополнительно</h2>
+
+            <button type="button" class="profile-button" id="showHistoryBtn">
+                История игр
+            </button>
+
+            <a href="@Url.Action("PrivacyPolicy", "Home")" class="profile-button">
+                Политика конфиденциальности
+            </a>
+
+            <a href="@Url.Action("CookiesPolicy", "Home")" class="profile-button">
+                Политика Cookies
+            </a>
+
+            <a href="@Url.Action("TermsOfUse", "Home")" class="profile-button">
+                Правила использования
+            </a>
+        </div>
+    </main>
+
 </body>
 <!-- Подключаем jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Скрипт для смены аватара с превью -->
-<script src="~/js/avatar.js"></script>
+<script src="~/js/avatar.js" defer></script>
 <!-- Скрипт 2FA -->
-<script src="~/js/twofa.js"></script>
+<script src="~/js/twofa.js" defer></script>
 <!--Логика смены пароля и проверки в реальном времени-->
-<script src="~/js/password-change.js"></script>
+@* <script src="~/js/password-change.js"></script> *@
+<!--Логика форм профиля-->
+<script src="~/js/profile.js" defer></script>
 
-<!-- _Enable2FAModal.cshtml -->
-<div class="modal fade" id="googleAuthModal" tabindex="-1" aria-labelledby="googleAuthModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 15px;">
-            <!-- Шапка модального окна -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="googleAuthModalLabel">Подключение Google Authenticator</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <!-- Тело модального окна -->
-            <div class="modal-body">
-                <p>Для включения двухфакторной аутентификации через Google Authenticator:</p>
-                <ol>
-                    <li>Установите приложение <b>Google Authenticator</b> на телефон</li>
-                    <li>Отсканируйте QR-код или введите код вручную</li>
-                    <li>Введите полученный в приложении 6-значный код</li>
-                </ol>
-                <!-- QR-код -->
-                <div class="text-center mb-3">
-                    <img src="@ViewBag.QrCodeImageUrl" alt="QR Code" class="img-fluid rounded" style="max-width: 200px;" />
-                </div>
-                <!-- Секретный ключ для ручного ввода -->
-                <p>Или введите вручную: <strong>@ViewBag.SecretKey</strong></p>
-                <!-- Поле для ввода кода -->
-                <div class="mb-3">
-                    <label for="verificationCode" class="form-label">Код подтверждения</label>
-                    <input type="text" class="form-control" id="verificationCode" placeholder="Например, 123456" />
-                </div>
-                <!-- Сообщение о результате проверки -->
-                <div id="verifyMessage" class="mt-2"></div>
-            </div>
-            <!-- Футер модального окна -->
-            <div class="modal-footer" style="justify-content:center;">
-                <button type="button" class="button button__play" id="button-play" onclick="verify2FACode()" style="justify-content:center;">Подтвердить</button>
-            </div>
+
+<!-- 2FA Modal -->
+<div id="twoFAModal" class="profile-modal">
+    <div class="profile-modal-content">
+        <div class="profile-modal-header">
+            <h3 class="profile-modal-title">Подключение 2FA</h3>
+            <button class="profile-modal-close" onclick="closeModal('twoFAModal')">&times;</button>
         </div>
+
+        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 20px;">
+            Для включения двухфакторной аутентификации:
+        </p>
+        <ol style="color: rgba(255, 255, 255, 0.7); margin-bottom: 30px; padding-left: 20px;">
+            <li>Установите приложение Google Authenticator</li>
+            <li>Отсканируйте QR-код или введите код вручную</li>
+            <li>Введите полученный 6-значный код</li>
+        </ol>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="@ViewBag.QrCodeImageUrl" alt="Qr" style="width: 200px; height: 200px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.5);" />
+        </div>
+
+        <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 20px; text-align: center;">
+            Или введите вручную: <strong style="color: #41CAC2;">@ViewBag.SecretKey</strong>
+        </p>
+
+        <div class="profile-input-group">
+            <label class="profile-label" for="verificationCode">Код подтверждения</label>
+            <input type="text" id="verificationCode" class="profile-input" placeholder="000000">
+        </div>
+
+        <button type="button" class="profile-button profile-button-2fa" onclick="verify2FA()">
+            Подтвердить
+        </button>
     </div>
 </div>
 
-<!-- Модальное окно для истории игр -->
-<div class="modal fade" id="quizResultsModal" tabindex="-1" aria-labelledby="quizResultsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content" style="border-radius: 15px;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="quizResultsModalLabel">История игр</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-                <table class="custom-modal-table">
-                    <thead>
+<!-- History Modal -->
+<div id="historyModal" class="profile-modal">
+    <div class="profile-modal-content">
+        <div class="profile-modal-header">
+            <h3 class="profile-modal-title">История игр</h3>
+            <button class="profile-modal-close" onclick="closeModal('historyModal')">&times;</button>
+        </div>
+
+        <table class="profile-table">
+            <thead>
+                <tr>
+                    <th>Тип викторины</th>
+                    <th>Очки</th>
+                    <th>Дата игры</th>
+                    <th>Место</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.QuizResults != null && (ViewBag.QuizResults as List<DataAccessLayer.Models.QuizResult>).Any())
+                {
+                    foreach (var result in ViewBag.QuizResults as List<DataAccessLayer.Models.QuizResult>)
+                    {
                         <tr>
-                            <th>Тип викторины</th>
-                            <th>Очки</th>
-                            <th>Дата игры</th>
-                            <th>Место</th>
+                            <td>@result.Type</td>
+                            <td>@result.Score</td>
+                            <td>@result.DatePlayed.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@(result.Place.HasValue? result.Place.Value.ToString() : "-")</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @if (ViewBag.QuizResults != null && (ViewBag.QuizResults as List<DataAccessLayer.Models.QuizResult>).Any())
-                        {
-                            foreach (var result in ViewBag.QuizResults as List<DataAccessLayer.Models.QuizResult>)
-                            {
-                                <tr>
-                                    <td>@result.Type</td>
-                                    <td>@result.Score</td>
-                                    <td>@result.DatePlayed.ToString("dd.MM.yyyy HH:mm")</td>
-                                    <td>@(result.Place.HasValue ? result.Place.Value.ToString() : "-")</td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="4" style="text-align:center;">Нет результатов</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer" style="justify-content: center;">
-                <button type="button" class="button button__play" data-bs-dismiss="modal">Закрыть</button>
-            </div>
-        </div>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" style="text-align:center;">Нет результатов</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
-
-

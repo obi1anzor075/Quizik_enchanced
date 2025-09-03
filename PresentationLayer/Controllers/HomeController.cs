@@ -288,6 +288,8 @@ namespace PresentationLayer.Controllers
             }
 
             ViewBag.ProfilePicture = base64ProfilePicture;
+            ViewBag.Name = user.Name;
+            ViewBag.Email = user.Email;
 
             return View();
         }

@@ -4,6 +4,10 @@
 @model LoginVM;
 @inject PresentationLayer.Utilities.SharedViewLocalizer SharedLocalizer
 
+@{
+    ViewData["Title"] = "Вход";
+}
+
 <head>
     <link href="~/css/landing.css" rel="stylesheet" />
 </head>
@@ -27,7 +31,7 @@
     </div>
     <div class="logo__img">
         <div class="auth-logo">
-            <span class="auth-logo-text">Quizik</span>
+            <span class="auth-logo-text">Quiz-go</span>
         </div>
     </div>
     <div class="log__in" style="display: none">

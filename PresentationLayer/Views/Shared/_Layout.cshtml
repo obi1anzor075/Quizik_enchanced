@@ -44,7 +44,7 @@
 				<div class="ring ring-1"></div>
 				<div class="ring ring-2"></div>
 				<div class="ring ring-3"></div>
-				<div class="logo-text">Q</div>
+				<div class="logo-text"></div>
 			</div>
 
 			<!-- Loading information -->
@@ -109,3 +109,23 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+<!-- Development Modal -->
+<div id="devModal" class="dev-modal">
+	<div class="dev-modal-content">
+		<div class="dev-modal-icon">
+			<svg width="40" height="40" fill="white" viewBox="0 0 24 24">
+				<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+			</svg>
+		</div>
+		<h3 class="dev-modal-title">В разработке</h3>
+		<p class="dev-modal-text">
+			Эта функция находится в стадии разработки и будет доступна в ближайшее время.
+			Спасибо за ваше терпение!
+		</p>
+		<button class="dev-modal-close" onclick="closeDevModal()">
+			Понятно
+		</button>
+	</div>
+</div>

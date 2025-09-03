@@ -5,10 +5,12 @@
 @inject PresentationLayer.Utilities.SharedViewLocalizer SharedLocalizer
 @model RegisterVM;
 
+@{
+    ViewData["Title"] = "Регистрация";
+}
 
 <head>
     <link href="~/css/landing.css" rel="stylesheet" />
-    <title>@ViewData["Title"]</title>
 </head>
 
 <header class="head__part">
@@ -32,7 +34,7 @@
     </div>
     <div class="logo__img">
         <div class="auth-logo">
-            <span class="auth-logo-text">Quizik</span>
+            <span class="auth-logo-text">Quiz-go</span>
         </div>
     </div>
     <div class="log__in" style="display: none">
@@ -102,7 +104,7 @@
                             <input asp-for="TermOfService" type="checkbox" class="auth-checkbox-input" />
                             <span class="auth-checkbox-visual"></span>
                         </label>
-                        <label class="auth-checkbox-label" for="TermOfService">Согласен с<a asp-controller="Home" asp-action="Login"> Условиями использования</a></label>
+                            <label class="auth-checkbox-label" for="TermOfService">Согласен с<a asp-controller="Home" asp-action="TermsofUse"> Условиями использования</a></label>
                     </div>
 
 

@@ -7,6 +7,9 @@
 @inject UserManager<User> UserManager
 @model RegisterVM
 
+@{
+    ViewData["Title"] = "Выбор режима";
+}
 
 <head>
     <link href="~/css/chat.css" rel="stylesheet" />
@@ -45,19 +48,70 @@
                 }
             </div>
                 <div class="logo__img">
-                    <span class="logo-text">Quizik</span>
+                    <span class="logo-text">Quiz-go</span>
                 </div>
                 <div class="head__mode_right">
-                <div class="google__logout profile-selector">
-                    <!--a class="google__logout_btn" asp-controller="Home" asp-action="Logout">Localizer["LogoutButton"]</a>-->
-                    <!-- Круглый аватар, подтягивается из БД, если нет – используется аватар по умолчанию -->
-                    <img src="@ViewBag.ProfilePicture" alt="Alternate Text" class="profile-photo" />
-                    <!-- Выпадающее меню -->
-                    <div class="profile-menu">
-                        <a asp-action="Profile">Профиль</a>
-                        <a asp-action="Logout">Выход</a>
+                <div class="profile-container">
+                    <!-- Profile Avatar -->
+                    <div class="profile-avatar-wrapper" onclick="toggleProfileMenu()">
+                        <div class="profile-ring">
+                            <div class="profile-ring-inner"></div>
+                        </div>
+                        <img src="@ViewBag.ProfilePicture" alt="Profile" class="profile-photo">
+                        <div class="profile-status"></div>
+                        <div class="profile-badge">0</div>
                     </div>
+
+                    <!-- Dropdown Menu -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="profile-info">
+                            <div class="profile-name">@ViewBag.Name</div>
+                            <div class="profile-email">@ViewBag.Email</div>
+                        </div>
+
+                        <a asp-action="Profile" class="profile-menu-item">
+                            <div class="profile-menu-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <span>Профиль</span>
+                        </a>
+
+                        <a href="#" class="profile-menu-item dev-feature" onclick="showDevModal">
+                            <div class="profile-menu-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 8.54l4.24 4.24m12.68 0l4.24 4.24M1.54 15.46l4.24-4.24"></path>
+                                </svg>
+                            </div>
+                            <span>Настройки</span>
+                        </a>
+
+                        <a href="#" class="profile-menu-item dev-feature" onclick="showDevModal">
+                            <div class="profile-menu-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                </svg>
+                            </div>
+                            <span>Статистика</span>
+                        </a>
+
+                        <div class="profile-divider"></div>
+
+                        <a asp-action="Logout" class="profile-menu-item logout">
+                            <div class="profile-menu-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                </svg>
+                            </div>
+                            <span>Выход</span>
+                        </a>
                     </div>
+                </div>
                      <div id="body">
                     <!-- Chat Circle -->
                     <div id="chat-circle" class="btn btn-raised">
@@ -105,7 +159,7 @@
 <main>
     <div class="container__mode">
         <!-- Mode buttons (translated) -->
-        <div class="carousel_container swiper">
+        <div class="carousel_container swiper dev-feature" >
             <div class="card-wrapper">
                 <ul class="card-list swiper-wrapper">
                     <li class="card-item swiper-slide" data-swiper-autoplay="2000">
@@ -368,20 +422,33 @@
 
     </script>
 
+<!--Avatar menu dropdown-->
 <script>
-    // Открытие/закрытие выпадающего меню при клике на аватар
-    document.querySelector('.profile-selector').addEventListener('click', function (e) {
-        const menu = document.querySelector('.profile-menu');
-        menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
-        e.stopPropagation(); // предотвращаем закрытие при клике внутри
+    let isMenuOpen = false;
+
+    function toggleProfileMenu() {
+        const dropdown = document.getElementById('profileDropdown');
+        isMenuOpen = !isMenuOpen;
+
+        if (isMenuOpen) {
+            dropdown.classList.add('active');
+        } else {
+            dropdown.classList.remove('active');
+        }
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const profileContainer = document.querySelector('.profile-container');
+
+        if (!profileContainer.contains(event.target) && isMenuOpen) {
+            toggleProfileMenu();
+        }
     });
 
-    // Закрытие меню при клике вне его области
-    document.addEventListener('click', function () {
-        const menu = document.querySelector('.profile-menu');
-        if (menu) {
-            menu.style.display = 'none';
-        }
+    // Prevent menu from closing when clicking inside
+    document.getElementById('profileDropdown').addEventListener('click', function(event) {
+        event.stopPropagation();
     });
 </script>
 
