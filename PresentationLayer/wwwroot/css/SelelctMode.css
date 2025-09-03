@@ -180,9 +180,18 @@ a:hover{
 }
 
 /*Logo*/
-.main__logo_landing{
-    width: 400px;
-    padding-top:40px;
+.logo-text {
+    font-size: clamp(28px, 9vw, 148px);
+    font-weight: 900;
+    font-style: italic;
+    background: linear-gradient(45deg, #41CAC2, #c021c3, #866efb);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: authGradientFlow 3s ease infinite;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .chat-msg {

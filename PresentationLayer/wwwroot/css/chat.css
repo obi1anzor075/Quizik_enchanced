@@ -164,7 +164,7 @@
 /* Chat Logs */
 .chat-logs {
     padding: 20px;
-    height: 320px;
+    height: -webkit-fill-available;
     overflow-y: auto;
     scroll-behavior: smooth;
 }
