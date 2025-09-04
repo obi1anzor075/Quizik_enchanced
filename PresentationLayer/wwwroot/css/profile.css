@@ -58,13 +58,14 @@
 /* Main container */
 .profile-main {
     position: relative;
-    width:100vw;
+    width:98vw;
     z-index: 10;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     padding: 20px;
     flex-wrap: wrap;
+    gap:20px;
 }
 
 /* Profile card styles */
