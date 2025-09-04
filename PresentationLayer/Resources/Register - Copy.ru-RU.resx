@@ -118,36 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="RegistrationTitle" xml:space="preserve">
-    <value>RegistrationTitle</value>
+    <value>Играть</value>
   </data>
   <data name="UserNamePlaceholder" xml:space="preserve">
-    <value>UserNamePlaceholder</value>
+    <value>Введите имя</value>
   </data>
   <data name="EmailPlaceholder" xml:space="preserve">
-    <value>EmailPlaceholder</value>
+    <value>Введите почту</value>
   </data>
   <data name="PasswordPlaceholder" xml:space="preserve">
-    <value>PasswordPlaceholder</value>
+    <value>Введите пароль</value>
   </data>
   <data name="ConfirmPasswordPlaceholder" xml:space="preserve">
-    <value>ConfirmPasswordPlaceholder</value>
+    <value>Подтвердите пароль</value>
   </data>
   <data name="TermsOfServiceText" xml:space="preserve">
-    <value>TermsOfServiceText</value>
+    <value>Я согласен с</value>
   </data>
   <data name="SubmitButton" xml:space="preserve">
-    <value>SubmitButton</value>
+    <value>Зарегистрироваться</value>
   </data>
   <data name="AlreadyHaveAccount" xml:space="preserve">
-    <value>AlreadyHaveAccount</value>
+    <value>Уже есть аккаунт?</value>
   </data>
   <data name="OrText" xml:space="preserve">
-    <value>OrText</value>
+    <value>ИЛИ</value>
   </data>
   <data name="TermsOfServiceTextLink" xml:space="preserve">
-    <value>TermsOfServiceTextLink</value>
+    <value>Условиями использования</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Login</value>
+    <value>Войти</value>
   </data>
 </root>
