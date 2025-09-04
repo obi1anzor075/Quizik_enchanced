@@ -16,7 +16,6 @@ using Microsoft.Extensions.Options;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using PresentationLayer.Utilities;
-using Microsoft.AspNetCore.Components.Forms;
 using PresentationLayer;
 using Microsoft.Extensions.FileProviders;
 
@@ -151,8 +150,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(30);
     options.SlidingExpiration = true;
-    options.LoginPath = "/Home/Login";
-    options.LogoutPath = "/Home/Logout";
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Home/AccessDenied";
 
     if (builder.Environment.IsDevelopment())
@@ -214,7 +213,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Login}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.MapHub<GameHub>("/gamehub");
 

@@ -1,0 +1,271 @@
+﻿@model Verify2FAModel
+
+@{
+    ViewData["Title"] = "Подтвердите код";
+}
+<head>
+    <link href="~/css/landing.css" rel="stylesheet" />
+</head>
+<header class="head__part">
+    <div class="settings">
+        <form asp-controller="Home" asp-action="SetLanguage" method="post" class="language-selector" style="display:none;">
+            <input type="hidden" name="culture" id="selectedLanguage" value="ru-RU">
+            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+
+            <div class="selected-flag" id="currentFlag" onclick="toggleDropdown()"
+                 style="background-image: url(https://hatscripts.github.io/circle-flags/flags/ru.svg);">
+            </div>
+
+            <div class="flag-dropdown" id="flagDropdown">
+                <img src="https://hatscripts.github.io/circle-flags/flags/ru.svg" alt="Русский" onclick="selectLanguage('ru-RU', this)">
+                <img src="https://hatscripts.github.io/circle-flags/flags/us.svg" alt="English" onclick="selectLanguage('en-US', this)">
+                <img src="https://hatscripts.github.io/circle-flags/flags/cn.svg" alt="中文" onclick="selectLanguage('zh-CN', this)">
+            </div>
+        </form>
+    </div>
+    <div class="logo__img">
+        <div class="auth-logo">
+            <span class="auth-logo-text">Quiz-go</span>
+        </div>
+    </div>
+    <div class="log__in" style="display: none">
+        <button type="button" class="button">
+            <img src="~/img/add-user.png" alt="Add user" />
+            <span class="log__in_text"></span>
+        </button>
+    </div>
+</header>
+
+<div class="ctr profile-ctr">
+    <div class="twofa-container">
+        <a href="javascript:history.back()" class="twofa-back-link">
+            ← Назад к входу
+        </a>
+
+        <h2 class="twofa-title">Двухфакторная аутентификация</h2>
+
+        <div class="twofa-info">
+            Введите 6-значный код из вашего приложения аутентификации
+        </div>
+
+        <form class="twofa-form" id="twofaForm" asp-action="Verify2FA" method="post">
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="RememberMe" />
+
+            <div id="twofaError" class="twofa-error" style="display: none;">
+                Неверный код. Попробуйте снова.
+            </div>
+
+            <div class="twofa-input-wrapper">
+                <input asp-for="Code"
+                       class="twofa-input code-input"
+                       placeholder="000000"
+                       maxlength="6"
+                       pattern="[0-9]{6}"
+                       autocomplete="one-time-code"
+                       id="codeInput"
+                       required />
+            </div>
+
+            <button type="submit" class="twofa-submit-btn" id="submitBtn">
+                Подтвердить
+            </button>
+
+            <div class="twofa-loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                Проверка кода...
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('twofaForm');
+        const codeInput = document.getElementById('codeInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorDiv = document.getElementById('twofaError');
+
+        // Auto-focus на поле ввода
+        codeInput.focus();
+
+        // Форматирование ввода кода
+        codeInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Только цифры
+            if (value.length > 6) {
+                value = value.substr(0, 6);
+            }
+            e.target.value = value;
+
+            // Скрыть ошибку при вводе
+            if (errorDiv.style.display !== 'none') {
+                errorDiv.style.display = 'none';
+                errorDiv.classList.remove('twofa-error');
+                setTimeout(() => errorDiv.classList.add('twofa-error'), 10);
+            }
+
+        });
+
+        // Обработка отправки формы
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const code = codeInput.value.trim();
+
+        // Валидация
+        if (code.length !== 6 || !/^\d{6}$/.test(code)) {
+            showError('Код должен содержать 6 цифр');
+            return;
+        }
+
+        const formData = new FormData(form);
+
+        showLoading(true);
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin',
+                redirect: 'follow'
+            });
+
+            const contentType = (response.headers.get('content-type') || '').toLowerCase();
+
+            if (contentType.includes('application/json')) {
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    submitBtn.classList.add('twofa-success');
+                    submitBtn.textContent = 'Успешно!';
+
+                    setTimeout(() => {
+                        if (data.redirectUrl) {
+                            window.location.href = data.redirectUrl;
+                        } else {
+                            window.location.reload();
+                        }
+                    }, 800);
+                    return;
+                } else {
+                    showError(data.message || 'Неверный код. Попробуйте снова.');
+                    return;
+                }
+            }
+
+            const text = await response.text();
+
+            if (response.redirected) {
+                window.location.href = response.url;
+                return;
+            }
+
+            if (text.includes('Неверный код') || text.includes('Неверный код подтверждения')) {
+                showError('Неверный код. Попробуйте снова.');
+                return;
+            }
+
+            // Если статус 401/403 — обновим/перенаправим на логин
+            if (response.status === 401 || response.status === 403) {
+                window.location.reload();
+                return;
+            }
+
+            // Иначе показываем общую ошибку и лог для отладки
+            console.warn('Unexpected response:', response.status, text.slice(0, 1000));
+            showError('Произошла ошибка. Попробуйте снова.');
+
+        } catch (err) {
+            console.error('Fetch error:', err);
+            showError('Ошибка соединения. Попробуйте снова.');
+        } finally {
+            showLoading(false);
+        }
+    });
+
+        function showLoading(show) {
+            if (show) {
+                loadingIndicator.style.display = 'block';
+                submitBtn.disabled = true;
+                codeInput.disabled = true;
+            } else {
+                loadingIndicator.style.display = 'none';
+                submitBtn.disabled = false;
+                codeInput.disabled = false;
+            }
+        }
+
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+
+            // Анимация тряски
+            errorDiv.classList.remove('twofa-error');
+            setTimeout(() => errorDiv.classList.add('twofa-error'), 10);
+
+            // Очистить поле и вернуть фокус
+            codeInput.value = '';
+            codeInput.focus();
+
+            // Тряска поля ввода
+            codeInput.style.animation = 'none';
+            setTimeout(() => {
+                codeInput.style.animation = 'twofaErrorShake 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            }, 10);
+        }
+
+        // Обработка клавиш
+        codeInput.addEventListener('keydown', function(e) {
+            // Разрешить только цифры, backspace, delete, tab, escape, enter
+            if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                // Разрешить Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Разрешить home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                return;
+            }
+
+            // Запретить все кроме цифр
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        // Обработка вставки из буфера обмена
+        codeInput.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 6) {
+                    value = value.substr(0, 6);
+                }
+                e.target.value = value;
+
+                if (value.length === 6) {
+                    setTimeout(() => {
+                        form.submit();
+                    }, 300);
+                }
+            }, 10);
+        });
+    });
+
+    // Функции для переключения языка (если нужны)
+    function toggleDropdown() {
+        // Ваш код для переключения языка
+    }
+
+    function selectLanguage(culture, element) {
+        // Ваш код для выбора языка
+    }
+</script>
+
+
+
+

@@ -51,16 +51,16 @@ namespace PresentationLayer.Hubs
             _imageService = imageService;
         }
 
-        public Task<string> GetUserName()
-        {
-            var userName = _httpContextAccessor.HttpContext.Request.Cookies["userName"];
-            if (string.IsNullOrEmpty(userName))
-            {
-                throw new KeyNotFoundException("User name not found");
-            }
+        //public Task<string> GetUserName()
+        //{
+        //    var userName = _httpContextAccessor.HttpContext.Request.Cookies["userName"];
+        //    if (string.IsNullOrEmpty(userName))
+        //    {
+        //        throw new KeyNotFoundException("User name not found");
+        //    }
 
-            return Task.FromResult(userName);
-        }
+        //    return Task.FromResult(userName);
+        //}
 
 
         // Save UserName and GET

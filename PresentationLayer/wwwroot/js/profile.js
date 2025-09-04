@@ -13,117 +13,137 @@ function closeModal(modalId) {
 // Form submission handler
 function setupProfileForm() {
     const profileForm = document.getElementById('profileForm');
+    if (!profileForm) return;
 
-    if (profileForm) {
-        profileForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
+    profileForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
 
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
+        const form = this;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn ? submitBtn.textContent : '';
+        const avatarEl = form.querySelector('#avatar');
+        const userNameEl = form.querySelector('#userName');
+        const userEmailEl = form.querySelector('#userEmail');
 
-            // Validate required fields
-            const userName = document.getElementById('userName').value.trim();
-            const userEmail = document.getElementById('userEmail').value.trim();
+        // Validate visible values
+        const userName = (userNameEl?.value || '').trim();
+        const userEmail = (userEmailEl?.value || '').trim();
 
-            if (!userName) {
-                alert('Пожалуйста, введите имя');
-                document.getElementById('userName').focus();
+        if (!userName) {
+            alert('Пожалуйста, введите имя');
+            userNameEl?.focus();
+            return;
+        }
+        if (!userEmail) {
+            alert('Пожалуйста, введите email');
+            userEmailEl?.focus();
+            return;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(userEmail)) {
+            alert('Пожалуйста, введите корректный email');
+            userEmailEl?.focus();
+            return;
+        }
+
+        try {
+            if (submitBtn) { submitBtn.textContent = 'Сохранение...'; submitBtn.disabled = true; }
+
+            // Собираем FormData из формы (включая файлы и скрытые поля)
+            const formData = new FormData(form);
+
+            // Гарантируем, что поля совпадают с UpdateUserVM.Name / UpdateUserVM.Email
+            // (вдруг в разметке не было name="" — тогда заменяем/дополняем)
+            formData.set('Name', userName);
+            formData.set('Email', userEmail);
+
+            // Файл: контроллер ожидает IFormFile avatar
+            // Если input не имеет name="avatar", FormData(form) не добавит файл — добавим вручную
+            const avatarFile = avatarEl?.files?.[0];
+            if (avatarFile) {
+                formData.set('avatar', avatarFile); // имя параметра должно быть 'avatar'
+            }
+
+            // Анти-фрод токен (если есть в форме)
+            const tokenInput = form.querySelector('input[name="__RequestVerificationToken"]');
+            if (tokenInput && !formData.has('__RequestVerificationToken')) {
+                formData.set('__RequestVerificationToken', tokenInput.value);
+            }
+
+            // Отправляем запрос
+            const url = form.action || window.location.href;
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest' // помогает на сервере понять AJAX
+                },
+                redirect: 'follow' // по умолчанию
+            });
+
+            // Если сервер сделал редирект (например RedirectToAction("Profile")), перенаправим браузер
+            if (response.redirected) {
+                window.location.href = response.url;
                 return;
             }
 
-            if (!userEmail) {
-                alert('Пожалуйста, введите email');
-                document.getElementById('userEmail').focus();
-                return;
-            }
+            // Попробуем понять тип ответа
+            const contentType = (response.headers.get('content-type') || '').toLowerCase();
 
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(userEmail)) {
-                alert('Пожалуйста, введите корректный email');
-                document.getElementById('userEmail').focus();
-                return;
-            }
-
-            try {
-                // Show loading state
-                submitBtn.textContent = 'Сохранение...';
-                submitBtn.disabled = true;
-
-                // Prepare FormData for ASP.NET
-                const formData = new FormData();
-                formData.append('UserName', userName);
-                formData.append('UserEmail', userEmail);
-
-                // Add avatar file if selected
-                const avatarFile = document.getElementById('avatar').files[0];
-                if (avatarFile) {
-                    formData.append('Avatar', avatarFile);
-                }
-
-                // Get anti-forgery token if present
-                const tokenInput = this.querySelector('input[name="__RequestVerificationToken"]');
-                if (tokenInput) {
-                    formData.append('__RequestVerificationToken', tokenInput.value);
-                }
-
-                // Send request to ASP.NET controller
-                const response = await fetch(this.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-
-                    if (result.success) {
-                        alert('Профиль успешно обновлен!');
-
-                        // Update UI if needed
-                        if (result.avatarUrl) {
-                            const imagePreview = document.getElementById('imagePreview');
-                            if (imagePreview && imagePreview.querySelector('img')) {
-                                // Avatar preview is already updated by the file input handler
-                            }
+            if (response.ok && contentType.includes('application/json')) {
+                const result = await response.json();
+                if (result.success) {
+                    alert('Профиль успешно обновлен!');
+                    // если сервер вернул avatarUrl — обновим превью
+                    if (result.avatarUrl) {
+                        const imagePreview = document.getElementById('imagePreview');
+                        if (imagePreview) {
+                            imagePreview.innerHTML = `<img src="${result.avatarUrl}" alt="Avatar" />`;
                         }
-                    } else {
-                        alert(result.message || 'Произошла ошибка при сохранении');
                     }
+                    // Можно обновить страницу / части UI при необходимости
                 } else {
-                    // Handle HTTP errors
-                    if (response.status === 400) {
-                        const errorData = await response.json();
-                        let errorMessage = 'Ошибка валидации:\n';
-
-                        if (errorData.errors) {
-                            Object.keys(errorData.errors).forEach(key => {
-                                errorMessage += `${key}: ${errorData.errors[key].join(', ')}\n`;
-                            });
-                        } else {
-                            errorMessage = errorData.message || 'Некорректные данные';
-                        }
-
-                        alert(errorMessage);
-                    } else if (response.status === 413) {
-                        alert('Файл слишком большой. Пожалуйста, выберите файл меньшего размера.');
-                    } else {
-                        alert('Произошла ошибка сервера. Пожалуйста, попробуйте позже.');
-                    }
+                    alert(result.message || 'Произошла ошибка при сохранении');
+                    console.log('Response JSON:', result);
                 }
-
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Произошла ошибка при отправке данных. Проверьте интернет-соединение.');
-            } finally {
-                // Restore button state
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+            } else if (!response.ok) {
+                // Примитивная обработка ошибок по статусу
+                if (response.status === 400) {
+                    // сервер может вернуть HTML или JSON — попробуем JSON, если нет — показать текст
+                    const ct = (response.headers.get('content-type') || '').toLowerCase();
+                    if (ct.includes('application/json')) {
+                        const err = await response.json();
+                        alert(err.message || 'Ошибка валидации');
+                        console.log('Validation errors:', err);
+                    } else {
+                        const txt = await response.text();
+                        console.warn('400 response (HTML):', txt);
+                        alert('Ошибка валидации (см. консоль).');
+                    }
+                } else if (response.status === 413) {
+                    alert('Файл слишком большой. Пожалуйста, выберите файл меньшего размера.');
+                } else if (response.status === 401 || response.status === 403) {
+                    // возможно сессия истекла — перенаправим на логин
+                    window.location.reload();
+                } else {
+                    const txt = await response.text();
+                    console.error('Server error:', response.status, txt);
+                    alert('Произошла ошибка сервера. Проверьте консоль для деталей.');
+                }
+            } else {
+                // Ответ OK, но не JSON — скорее всего сервер вернул HTML (например, View(updatedUser))
+                const txt = await response.text();
+                // Если это HTML со строкой формы/ошибками — можно показать предупреждение и вывести в консоль
+                console.log('Non-JSON success response:', txt.slice(0, 1000));
+                alert('Сервер вернул HTML-ответ. Если вы ожидаете JSON для AJAX — измените поведение сервера или уберите перехват формы в JS.');
             }
-        });
-    }
+        } catch (err) {
+            console.error('Fetch error:', err);
+            alert('Произошла ошибка при отправке данных. Проверьте консоль.');
+        } finally {
+            if (submitBtn) { submitBtn.textContent = originalText; submitBtn.disabled = false; }
+        }
+    });
 }
 
 // 2FA toggle

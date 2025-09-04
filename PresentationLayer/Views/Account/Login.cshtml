@@ -1,12 +1,11 @@
-﻿@using PresentationLayer.ViewModels;
-@using PresentationLayer.Controllers;
-@using Microsoft.AspNetCore.Localization;
+﻿@using Microsoft.AspNetCore.Localization;
 @using PresentationLayer.ExtensionMethods;
+@using PresentationLayer.ViewModels;
+@model LoginVM;
 @inject PresentationLayer.Utilities.SharedViewLocalizer SharedLocalizer
-@model RegisterVM;
 
 @{
-    ViewData["Title"] = "Регистрация";
+    ViewData["Title"] = "Вход";
 }
 
 <head>
@@ -19,12 +18,10 @@
             <input type="hidden" name="culture" id="selectedLanguage" value="ru-RU">
             <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
 
-            <!-- Кнопка с текущим флагом -->
             <div class="selected-flag" id="currentFlag" onclick="toggleDropdown()"
                  style="background-image: url(https://hatscripts.github.io/circle-flags/flags/ru.svg);">
             </div>
 
-            <!-- Выпадающее меню -->
             <div class="flag-dropdown" id="flagDropdown">
                 <img src="https://hatscripts.github.io/circle-flags/flags/ru.svg" alt="Русский" onclick="selectLanguage('ru-RU', this)">
                 <img src="https://hatscripts.github.io/circle-flags/flags/us.svg" alt="English" onclick="selectLanguage('en-US', this)">
@@ -50,100 +47,76 @@
         <div class="field_wrapper">
             <div class="play__field">
                 <div class="auth-form-container">
-                    <form id="playForm" asp-action="Register" method="post">
-                    <div asp-validation-summary="ModelOnly" class="auth-error"></div>
+                    <form id="playForm" asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="auth-error"></div>
 
-                    <div class="auth-input-wrapper">
-                        <input asp-for="UserName"
-                               class="auth-input"
-                               required
-                               type="text"
-                               id="username"
-                               name="userName"
-                               placeholder=" " />
-                        <label class="auth-label" for="username">Имя</label>
-                    </div>
+                        <div class="auth-input-wrapper">
+                            <input asp-for="Email"
+                                   class="auth-input"
+                                   required
+                                   type="email"
+                                   id="username"
+                                   name="Email"
+                                   placeholder=" " />
+                            <label class="auth-label" for="username">Электронная почта</label>
+                        </div>
 
-                    <div class="auth-input-wrapper">
-                        <input asp-for="Email"
-                               class="auth-input"
-                               required
-                               type="email"
-                               id="username"
-                               name="Email"
-                               placeholder=" " />
-                        <label class="auth-label" for="username">Электронная почта</label>
-                    </div>
+                        <div class="auth-input-wrapper">
+                            <input asp-for="Password"
+                                   class="auth-input"
+                                   required
+                                   type="password"
+                                   id="password"
+                                   name="Password"
+                                   placeholder=" " />
+                            <label class="auth-label" for="password">Пароль</label>
+                        </div>
 
-                    <div class="auth-input-wrapper">
-                        <input asp-for="Password"
-                               class="auth-input"
-                               required
-                               type="password"
-                               id="password"
-                               name="password"
-                               placeholder=" " />
-                        <label class="auth-label" for="password">Пароль</label>
-                    </div>
+                        <div class="auth-checkbox-wrapper">
+                            <label class="auth-checkbox-container">
+                                <input asp-for="RememberMe" type="checkbox" class="auth-checkbox-input" />
+                                <span class="auth-checkbox-visual"></span>
+                            </label>
+                            <label class="auth-checkbox-label" for="RememberMe">Запомнить меня</label>
+                        </div>
 
-                    <input type="hidden" name="token" value="@Context.Request.Query["token"]" />
+                        <button type="submit" class="auth-submit-btn">
+                            <span>Войти в игру</span>
+                        </button>
 
-                    <div class="auth-input-wrapper">
-                        <input asp-for="ConfirmPassword"
-                               class="auth-input"
-                               required
-                               type="password"
-                               id="ConfirmPassword"
-                               name="ConfirmPassword"
-                               placeholder=" " />
-                        <label class="auth-label" for="password">Подтверждение пароля</label>
-                    </div>
-
-                    <div class="auth-checkbox-wrapper">
-                        <label class="auth-checkbox-container">
-                            <input asp-for="TermOfService" type="checkbox" class="auth-checkbox-input" />
-                            <span class="auth-checkbox-visual"></span>
-                        </label>
-                            <label class="auth-checkbox-label" for="TermOfService">Согласен с<a asp-controller="Home" asp-action="TermsofUse"> Условиями использования</a></label>
-                    </div>
-
-
-                    <button type="submit" class="auth-submit-btn">
-                        <span>Войти в игру</span>
-                    </button>
-
-                    <div class="auth-redirect">
-                        Уже есть аккаунт? <a asp-controller="Home" asp-action="Login">Войти</a>
-                    </div>
-                </form>
+                        <div class="auth-redirect">
+                            Нет аккаунта? <a asp-controller="Account" asp-action="Register">Зарегистрироваться</a>
+                        </div>
+                    </form>
 
                     <div class="auth-divider">
-                    <span>или</span>
-                </div>
+                        <span>или</span>
+                    </div>
 
                     <div id="g_id_onload"
-                     data-client_id="451296040503-18sveltvp6o2lfhlnr4490a6kb8o9sae.apps.googleusercontent.com"
-                     data-login_uri="@Url.Action("LoginGoogle", "Home")"
-                     data-auto_prompt="false">
-                </div>
+                         data-client_id="451296040503-18sveltvp6o2lfhlnr4490a6kb8o9sae.apps.googleusercontent.com"
+                         data-login_uri="@Url.Action("LoginGoogle", "Account")"
+                         data-auto_prompt="false">
+                    </div>
                     <button class="auth-social-btn" onclick="document.querySelector('.g_id_signin').click()">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M19.8 10.2c0-.7-.1-1.4-.2-2H10v3.8h5.5c-.2 1.2-.9 2.3-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z" fill="#4285F4" />
-                        <path d="M10 20c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 .9-3.4.9-2.6 0-4.8-1.8-5.6-4.2H1.1v2.6C2.7 17.8 6.1 20 10 20z" fill="#34A853" />
-                        <path d="M4.4 11.8c-.4-1.2-.4-2.4 0-3.6V5.6H1.1C-.3 8.3-.3 11.7 1.1 14.4l3.3-2.6z" fill="#FBBC05" />
-                        <path d="M10 4c1.5 0 2.8.5 3.8 1.5l2.9-2.9C15 1 12.7 0 10 0 6.1 0 2.7 2.2 1.1 5.6l3.3 2.6C5.2 5.8 7.4 4 10 4z" fill="#EA4335" />
-                    </svg>
-                    <span>Войти через Google</span>
-                </button>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M19.8 10.2c0-.7-.1-1.4-.2-2H10v3.8h5.5c-.2 1.2-.9 2.3-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z" fill="#4285F4" />
+                            <path d="M10 20c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 .9-3.4.9-2.6 0-4.8-1.8-5.6-4.2H1.1v2.6C2.7 17.8 6.1 20 10 20z" fill="#34A853" />
+                            <path d="M4.4 11.8c-.4-1.2-.4-2.4 0-3.6V5.6H1.1C-.3 8.3-.3 11.7 1.1 14.4l3.3-2.6z" fill="#FBBC05" />
+                            <path d="M10 4c1.5 0 2.8.5 3.8 1.5l2.9-2.9C15 1 12.7 0 10 0 6.1 0 2.7 2.2 1.1 5.6l3.3 2.6C5.2 5.8 7.4 4 10 4z" fill="#EA4335" />
+                        </svg>
+                        <span>Войти через Google</span>
+                    </button>
                     <div class="g_id_signin"
-                     data-type="standard"
-                     data-shape="rectangular"
-                     data-theme="outline"
-                     data-text="signin_with"
-                     data-size="large"
-                     data-logo_alignment="left"
-                     style="display: none;">
-                </div>
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left"
+                         style="display: none;">
+                    </div>
                 </div>
             </div>
         </div>
@@ -153,10 +126,6 @@
 <footer class="footer__part"></footer>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<!-- Подключение jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- Подключение Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
 
@@ -249,8 +218,6 @@
         }
     });
 </script>
-
-
 
 @section Scripts {
     @{

@@ -494,3 +494,327 @@ font-size:clamp(0.85rem,2.1vw,1.1rem);
     }
 }
 
+/* 2FA Form Specific Styles - prefixed to avoid conflicts */
+.twofa-container {
+    position: relative;
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 40px 32px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    animation: twofaFormReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 450px;
+    margin: 50px auto;
+}
+
+    .twofa-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        animation: twofaShimmer 4s ease-in-out infinite;
+    }
+
+@keyframes twofaFormReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes twofaShimmer {
+    0% {
+        left: -100%;
+    }
+
+    50% {
+        left: 100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.twofa-title {
+    text-align: center;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 30px;
+    background: linear-gradient(45deg, #41CAC2, #c021c3, #866efb);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: twofaGradientFlow 3s ease infinite, twofaTitleFade 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes twofaGradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes twofaTitleFade {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.twofa-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.twofa-input-wrapper {
+    position: relative;
+    animation: twofaInputSlide 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards;
+}
+
+@keyframes twofaInputSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.twofa-input {
+    width: 100%;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 8px;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+}
+
+    .twofa-input:focus {
+        border-color: #41CAC2;
+        background: rgba(65, 202, 194, 0.1);
+        box-shadow: 0 0 0 4px rgba(65, 202, 194, 0.1), 0 0 20px rgba(65, 202, 194, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .twofa-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+        letter-spacing: 2px;
+    }
+
+.twofa-submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #41CAC2, #866efb);
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    animation: twofaInputSlide 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s backwards;
+    box-shadow: 0 10px 25px rgba(65, 202, 194, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+    .twofa-submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .twofa-submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(65, 202, 194, 0.4);
+    }
+
+        .twofa-submit-btn:hover::before {
+            left: 100%;
+        }
+
+    .twofa-submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .twofa-submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+.twofa-error {
+    color: #ff6b6b;
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #ff6b6b;
+    animation: twofaErrorShake 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+}
+
+@keyframes twofaErrorShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+.twofa-loading {
+    display: none;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+    .twofa-loading .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top: 2px solid #41CAC2;
+        border-radius: 50%;
+        animation: twofaSpin 1s linear infinite;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+@keyframes twofaSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.twofa-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #41CAC2;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    animation: twofaInputSlide 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s backwards;
+}
+
+    .twofa-back-link:hover {
+        color: #c021c3;
+        transform: translateX(-5px);
+    }
+
+.twofa-info {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    animation: twofaInputSlide 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s backwards;
+}
+
+/* Code input auto-formatting */
+.twofa-input.code-input {
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    letter-spacing: 12px;
+    text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .twofa-container {
+        margin: 20px;
+        padding: 32px 24px;
+    }
+
+    .twofa-title {
+        font-size: 24px;
+    }
+
+    .twofa-input {
+        font-size: 16px;
+        letter-spacing: 6px;
+    }
+
+        .twofa-input.code-input {
+            font-size: 20px;
+            letter-spacing: 8px;
+        }
+}
+
+/* Success animation */
+.twofa-success {
+    animation: twofaSuccess 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes twofaSuccess {
+    0% {
+        transform: scale(1);
+        background: linear-gradient(135deg, #41CAC2, #866efb);
+    }
+
+    50% {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #4ade80, #22c55e);
+    }
+
+    100% {
+        transform: scale(1);
+        background: linear-gradient(135deg, #4ade80, #22c55e);
+    }
+}

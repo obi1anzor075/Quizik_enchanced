@@ -69,7 +69,7 @@
                             <div class="profile-email">@ViewBag.Email</div>
                         </div>
 
-                        <a asp-action="Profile" class="profile-menu-item">
+                        <a asp-action="Profile" asp-controller="Profile" class="profile-menu-item">
                             <div class="profile-menu-icon">
                                 <svg viewBox="0 0 24 24">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -79,7 +79,7 @@
                             <span>Профиль</span>
                         </a>
 
-                        <a href="#" class="profile-menu-item dev-feature" onclick="showDevModal">
+                        <a href="#" class="profile-menu-item dev-feature" onclick="showDevModal()">
                             <div class="profile-menu-icon">
                                 <svg viewBox="0 0 24 24">
                                     <circle cx="12" cy="12" r="3"></circle>
@@ -89,7 +89,7 @@
                             <span>Настройки</span>
                         </a>
 
-                        <a href="#" class="profile-menu-item dev-feature" onclick="showDevModal">
+                        <a href="#" class="profile-menu-item dev-feature" onclick="showDevModal()">
                             <div class="profile-menu-icon">
                                 <svg viewBox="0 0 24 24">
                                     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
@@ -100,7 +100,7 @@
 
                         <div class="profile-divider"></div>
 
-                        <a asp-action="Logout" class="profile-menu-item logout">
+                        <a asp-action="Logout" asp-controller="Account" class="profile-menu-item logout">
                             <div class="profile-menu-icon">
                                 <svg viewBox="0 0 24 24">
                                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -292,7 +292,7 @@
                         localStorage.setItem('userName', localUserName);
                         joinChat(localUserName);
                     } else {
-                        console.log("User name not found in cookies.");
+                        console.log("User name not found.");
                     }
                 } catch (error) {
                     console.error('Error fetching user name:', error);

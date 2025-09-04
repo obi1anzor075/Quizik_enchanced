@@ -17,7 +17,7 @@ function verify2FA() {
 
     $.ajax({
         type: "POST",
-        url: "/Home/Verify2FACode",
+        url: "/Profile/Verify2FACode",
         data: { code: code },
         success: function (response) {
             if (response.success) {
@@ -55,7 +55,7 @@ function disable2FA() {
 
     $.ajax({
         type: "POST",
-        url: "/Home/Disable2FA", // URL метода отключения 2FA
+        url: "/Profile/Disable2FA", // URL метода отключения 2FA
         success: function (response) {
             if (response.success) {
                 showMessage(response.message, 'success');

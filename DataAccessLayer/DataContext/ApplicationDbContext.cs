@@ -9,6 +9,4 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string
     {
     }
 
-    public DbSet<User> Users { get; set; }
-    // Добавьте другие DbSet для других сущностей, если они есть
 }

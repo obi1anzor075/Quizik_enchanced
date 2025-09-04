@@ -23,7 +23,7 @@ a:hover{
 
 .head__mode_part{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:1fr 3fr 1fr;
     height:auto;
     width:99vw;
     padding:25px;
@@ -584,6 +584,7 @@ a:hover{
     .profile-menu-item:hover {
         background: rgba(65, 202, 194, 0.1);
         transform: translateX(4px);
+        text-decoration:none;
     }
 
         .profile-menu-item:hover::before {

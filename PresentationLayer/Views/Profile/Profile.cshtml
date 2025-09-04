@@ -44,7 +44,8 @@
         <div class="profile-card">
             <h2 class="profile-card-title">Профиль пользователя</h2>
 
-            <form id="profileForm" asp-controller="Home" asp-action="UpdateProfile" enctype="multipart/form-data">
+            <form id="profileForm" asp-controller="Profile" asp-action="UpdateProfile" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
                 <!-- Avatar upload -->
                 <div class="avatar-upload">
                     <div class="avatar-edit">
@@ -56,7 +57,9 @@
                         </label>
                     </div>
                     <div class="avatar-preview">
-                        <div id="imagePreview"></div>
+                        <div id="imagePreview">
+                            <img src="@ViewBag.ProfilePicture" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        </div>
                     </div>
                 </div>
 
@@ -65,13 +68,13 @@
                 <!-- Name input -->
                 <div class="profile-input-group">
                     <label class="profile-label" for="userName">Имя</label>
-                    <input type="text" id="userName" class="profile-input" placeholder="Ваше имя" required>
+                    <input type="text" id="userName" name="Name" class="profile-input" placeholder="Ваше имя" value="@ViewBag.Name" required>
                 </div>
 
                 <!-- Email input -->
                 <div class="profile-input-group">
                     <label class="profile-label" for="userEmail">Email</label>
-                    <input type="email" id="userEmail" class="profile-input" placeholder="Ваш email" required>
+                    <input type="email" id="userEmail" name="Email" class="profile-input" placeholder="Ваш email" value="@ViewBag.Email" required>
                 </div>
 
                 <!-- Save button -->
@@ -86,23 +89,23 @@
         <div class="profile-card">
             <h2 class="profile-card-title">Безопасность</h2>
 
-            <form id="securityForm">
+            <form asp-action="ChangePassword" asp-controller="Profile" id="securityForm">
                 <!-- Current password -->
                 <div class="profile-input-group">
                     <label class="profile-label" for="currentPassword">Текущий пароль</label>
-                    <input type="password" id="currentPassword" class="profile-input" placeholder="Введите текущий пароль" required>
+                    <input type="password" name="CurrentPassword" id="currentPassword" class="profile-input" placeholder="Введите текущий пароль" required>
                 </div>
 
                 <!-- New password -->
                 <div class="profile-input-group">
                     <label class="profile-label" for="newPassword">Новый пароль</label>
-                    <input type="password" id="newPassword" class="profile-input" placeholder="Введите новый пароль" required>
+                    <input type="password" name="NewPassword" id="newPassword" class="profile-input" placeholder="Введите новый пароль" required>
                 </div>
 
                 <!-- Confirm password -->
                 <div class="profile-input-group">
                     <label class="profile-label" for="confirmPassword">Подтверждение пароля</label>
-                    <input type="password" id="confirmPassword" class="profile-input" placeholder="Повторите новый пароль" required>
+                    <input type="password" name="ConfirmPassword" id="confirmPassword" class="profile-input" placeholder="Повторите новый пароль" required>
                 </div>
 
                 <div class="profile-divider"></div>
